@@ -21,3 +21,12 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# IDE Specific Files
+.idea/
+*.iml
+# Ignore Target Build Folder
+target/
+
+#Ignore Properties Files
+*.properties
