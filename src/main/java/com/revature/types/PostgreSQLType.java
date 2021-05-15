@@ -12,7 +12,6 @@ package com.revature.types;
  * @author Nicholas Recino
  */
 public enum PostgreSQLType {
-
     BOOLEAN,
     CHAR,
     VARCHAR,
@@ -20,10 +19,7 @@ public enum PostgreSQLType {
     INT4,
     INT8,
     JSON,
-    MONEY,
     DECIMAL,
     TIMESTAMP,
-    SERIAL2,
     SERIAL4
-
 }

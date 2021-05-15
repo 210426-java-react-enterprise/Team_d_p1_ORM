@@ -8,6 +8,7 @@
 package com.revature.types;
 
 import com.revature.configurations.ColumnFieldConfig;
+import com.revature.util.DataFieldConverter;
 
 import java.lang.reflect.Field;
 
@@ -25,7 +26,7 @@ public class ColumnFieldType {
     // Useful pieces of information that would be needed to define the mapping and the information for a Field in a database;
     private  String tableName;
     private Field field;
-    private  String fieldName;
+    private String columnName;
     private DataType dataType;
     private Object defaultValue;
     private ColumnFieldConfig fieldConfig;
@@ -33,4 +34,10 @@ public class ColumnFieldType {
     private boolean isSerial;
     private boolean isForeignKey;
     private DataFieldConverter fieldConverter;
+
+
+    public String getColumnName() {
+        return columnName;
+    }
+
 }

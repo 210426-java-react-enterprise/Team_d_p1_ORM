@@ -7,6 +7,9 @@
  */
 package com.revature.types;
 
+import com.revature.models.Serial;
+import com.revature.util.DataFieldConverter;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -16,7 +19,7 @@ import java.util.Date;
  * Java Data Types Equivalent to the PostgreSQL Types
  */
 //TODO Determine what types correspond to which PSQL types Still need
-//    -- JSON, -- Money, -- Serial2, -- Serial4
+//    -- JSON
 public enum DataType implements DataFieldConverter {
 
     STRING(PostgreSQLType.VARCHAR, new Class<?>[] {String.class}){
@@ -137,6 +140,17 @@ public enum DataType implements DataFieldConverter {
         public Object parseDefaultString(ColumnFieldType fieldType, String defaultString) {
             return Double.parseDouble(defaultString);
         }
+    },
+    SERIAL(PostgreSQLType.SERIAL4,new Class<?>[]{Serial.class}){
+        @Override
+        public Object resultToJava(ColumnFieldType fieldType, ResultSet results, int columnPosition) throws SQLException {
+            return (new Serial(results.getInt(columnPosition)));
+        }
+
+        @Override
+        public Object parseDefaultString(ColumnFieldType fieldType, String defaultString){
+            return (new Serial(Long.parseLong(defaultString)));
+        }
     };
 
     private final PostgreSQLType postgreSQLType;
@@ -159,7 +173,7 @@ public enum DataType implements DataFieldConverter {
 
     @Override
     public PostgreSQLType getPostgreSQLType() {
-        return null;
+        return postgreSQLType;
     }
 
 

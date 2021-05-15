@@ -5,7 +5,10 @@
  * Last Modified: 5/14/21, 7:49 PM
  * Created by: Nicholas Recino
  */
-package com.revature.types;
+package com.revature.util;
+
+import com.revature.types.ColumnFieldType;
+import com.revature.types.PostgreSQLType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +25,7 @@ public interface DataFieldConverter{
      * @return Returns the appropriate argument to a PSQL insert or update statement.
      * @throws SQLException
      */
-    public Object parseDefaultString(ColumnFieldType fieldType,String defaultString)throws SQLException;
+    public Object parseDefaultString(ColumnFieldType fieldType, String defaultString)throws SQLException;
 
     /**
      * Converts a Java Object(Reflection) and returns the appropriate argument to a PSQL insert or update statement.

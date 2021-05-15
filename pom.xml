@@ -13,21 +13,21 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-
+<!-- JDBC Driver -->
     <dependencies>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.12</version>
         </dependency>
-<!--        Junit testing platform-->
+<!--Junit testing platform-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-<!--       Mockito Dependency -->
+<!--Mockito Dependency -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -42,7 +42,7 @@
     </dependencies>
 
     <build>
-<!--        Jacoco Maven Plugin Use mvn jacoco:report for when you want to generate the site in the target folder-->
+<!--Jacoco Maven Plugin Use mvn jacoco:report for when you want to generate the site in the target folder-->
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -62,8 +62,8 @@
                         </goals>
                     </execution>
 
-<!--                    Check ran when utilizing mvn clean verify, ensures there is no build
-                        unless specific coverage ratio is met, set at 10 percent for me to test quickly, change it to the 80 for production-->
+<!--Check ran when utilizing mvn clean verify, ensures there is no build
+    unless specific coverage ratio is met, set at 10 percent for me to test quickly, change it to the 80 for production-->
                     <execution>
                         <id>jacoco-check</id>
                         <goals>
