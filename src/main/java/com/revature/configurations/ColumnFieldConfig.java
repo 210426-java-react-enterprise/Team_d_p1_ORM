@@ -48,12 +48,12 @@
 
 package com.revature.configurations;
 
-import com.revature.types.DataTypes;
+import com.revature.types.DataType;
 
 public class ColumnFieldConfig {
     private String fieldName;
     private String columnName;
-    private DataTypes dataType;
+    private DataType dataType;
     private boolean notNull;
     private boolean serialID;
     private boolean primaryKey;
@@ -76,11 +76,11 @@ public class ColumnFieldConfig {
         this.columnName = columnName;
     }
 
-    public DataTypes getDataType() {
+    public DataType getDataType() {
         return dataType;
     }
 
-    public void setDataType(DataTypes dataType) {
+    public void setDataType(DataType dataType) {
         this.dataType = dataType;
     }
 

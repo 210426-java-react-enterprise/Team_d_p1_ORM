@@ -20,12 +20,11 @@ package com.revature.types;
  * Enumerator for all the Postgres data-types that will be allowed to be utilized within the ORM
  * @author Nicholas Recino
  */
-public enum PostgreSQLTypes {
+public enum PostgreSQLType {
 
     BOOLEAN,
     CHAR,
     VARCHAR,
-    DATE,
     FLOAT8,
     INT4,
     INT8,

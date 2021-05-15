@@ -17,7 +17,6 @@
 package com.revature.types;
 
 import com.revature.configurations.ColumnFieldConfig;
-import com.revature.services.DataFieldConverter;
 
 import java.lang.reflect.Field;
 
@@ -36,7 +35,7 @@ public class ColumnFieldType {
     private  String tableName;
     private Field field;
     private  String fieldName;
-    private  DataTypes dataType;
+    private DataType dataType;
     private Object defaultValue;
     private ColumnFieldConfig fieldConfig;
     private boolean isPrimaryKey;
