@@ -5,15 +5,6 @@
  * Last Modified: 5/14/21, 7:22 PM
  * Created by: Nicholas Recino
  */
-
-/*
- * File: FieldType
- * Team_d_p1_ORM
- * Date created: 5/14/21, 7:09 PM
- * Last Modified: 5/14/21, 7:09 PM
- * Created by: Nicholas Recino
- */
-
 package com.revature.types;
 
 import com.revature.configurations.ColumnFieldConfig;
