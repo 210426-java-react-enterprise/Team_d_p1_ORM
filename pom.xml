@@ -39,6 +39,12 @@
             <artifactId>jackson-core</artifactId>
             <version>2.12.3</version>
         </dependency>
+<!--Java Servlets -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -73,11 +79,11 @@
                             <rules>
                                 <rule>
                                     <element>PACKAGE</element>
-                                    <exludes>
+                                    <excludes>
                                         <exclude>
                                             *Test
                                         </exclude>
-                                    </exludes>
+                                    </excludes>
                                     <limits>
                                         <limit>
                                             <counter>LINE</counter>

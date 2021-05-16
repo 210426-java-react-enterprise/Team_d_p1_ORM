@@ -7,10 +7,14 @@
  */
 package com.revature.configurations;
 
+import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
+import com.revature.annotations.Column;
 import com.revature.types.ColumnFieldType;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableConfig<T> {
@@ -101,14 +105,18 @@ public class TableConfig<T> {
             }
         return name;
     }
-    // TODO Extract the field type of specified ID fields (FK and PK) will eventually have parameters
-    public static <T> ColumnFieldType extractIDFieldType(){
-        return null;
-    }
 
-    // TODO Extract all the field types from  a class
     public static <T> ColumnFieldType[] extractFieldTypes(Class<T> clazz){
-        return null;
+        List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
+        for(Class<?> classParse = clazz; clazz!=null; classParse = classParse.getSuperclass()){
+            for(Field field: classParse.getDeclaredFields()){
+                //TODO Need to define a ColumnFieldType Properly, above logic will grab all fields associated with a class object
+                ColumnFieldType fieldInfo = new ColumnFieldType();
+                if(fieldInfo!=null)
+                    columnFieldTypes.add(fieldInfo);
+            }
+        }
+        return columnFieldTypes.toArray(new ColumnFieldType[columnFieldTypes.size()]);
     }
 
 }
