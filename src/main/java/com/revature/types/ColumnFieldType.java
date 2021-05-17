@@ -33,6 +33,7 @@ public class ColumnFieldType {
     private boolean isPrimaryKey;
     private boolean isSerial;
     private boolean isForeignKey;
+    private boolean notNull;
     private DataFieldConverter fieldConverter;
 
 
@@ -40,4 +41,75 @@ public class ColumnFieldType {
         return columnName;
     }
 
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public void setField(Field field) {
+        this.field = field;
+    }
+
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
+
+    public Object getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(Object defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public ColumnFieldConfig getFieldConfig() {
+        return fieldConfig;
+    }
+
+    public void setFieldConfig(ColumnFieldConfig fieldConfig) {
+        this.fieldConfig = fieldConfig;
+    }
+
+    public boolean isPrimaryKey() {
+        return isPrimaryKey;
+    }
+
+    public void setPrimaryKey(boolean primaryKey) {
+        isPrimaryKey = primaryKey;
+    }
+
+    public boolean isSerial() {
+        return isSerial;
+    }
+
+    public void setSerial(boolean serial) {
+        isSerial = serial;
+    }
+
+    public boolean isForeignKey() {
+        return isForeignKey;
+    }
+
+    public void setForeignKey(boolean foreignKey) {
+        isForeignKey = foreignKey;
+    }
+
+    public boolean isNotNull() {
+        return notNull;
+    }
+
+    public void setNotNull(boolean notNull) {
+        this.notNull = notNull;
+    }
 }

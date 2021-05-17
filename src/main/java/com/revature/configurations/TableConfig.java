@@ -111,7 +111,9 @@ public class TableConfig<T> {
         for(Class<?> classParse = clazz; clazz!=null; classParse = classParse.getSuperclass()){
             for(Field field: classParse.getDeclaredFields()){
                 //TODO Need to define a ColumnFieldType Properly, above logic will grab all fields associated with a class object
+               Column column = field.getAnnotation(Column.class);
                 ColumnFieldType fieldInfo = new ColumnFieldType();
+                fieldInfo.setNotNull(column.notNull());
                 if(fieldInfo!=null)
                     columnFieldTypes.add(fieldInfo);
             }
