@@ -10,6 +10,7 @@ package com.revature.types;
 import com.revature.configurations.ColumnFieldConfig;
 import com.revature.util.DataFieldConverter;
 
+import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 
 public class ColumnFieldType {
@@ -38,6 +39,130 @@ public class ColumnFieldType {
 
     public String getColumnName() {
         return columnName;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // I JUST NEED LINES SO IT DOESNT MERGE CONFLICT ON ME
+    public DataType getDataType(){
+        return dataType;
+    }
+
+    public Object getDefaultValue(){
+        return defaultValue;
     }
 
 }

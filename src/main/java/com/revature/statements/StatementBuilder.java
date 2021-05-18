@@ -10,12 +10,15 @@ package com.revature.statements;
 
 // Builds Statements based upon table info and field types, extended for specific statement types, ALA the Sub languages of SQL
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 /**
  *
- * @param <T> Class that the Statements Will be acted upon
- * @param <ID_CLASS> Class of the primary key / foreign key ( ID ) not needed Object can satisfy this reference
  */
-public abstract class StatementBuilder<T, ID_CLASS> {
+public abstract class StatementBuilder{
 
     protected StatementType type;
+    protected PreparedStatement sqlStatement;
+    protected Connection conn;
 }
