@@ -13,6 +13,8 @@ import com.revature.util.DataFieldConverter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 /**
@@ -60,12 +62,11 @@ public enum DataType implements DataFieldConverter {
         //TODO figure out how to parse a date object from a string
         @Override
         public Object parseDefaultString(ColumnFieldType fieldType, String defaultStr) throws SQLException {
-            return null;
+            return OffsetDateTime.parse(defaultStr);
         }
         @Override
         public Object javaToPostgreSQLArguments(ColumnFieldType fieldType, Object javaObject) {
-            Date date = (Date) javaObject;
-            return new Timestamp(date.getTime());
+            return OffsetDateTime.parse(javaObject.toString());
         }
 
     },
