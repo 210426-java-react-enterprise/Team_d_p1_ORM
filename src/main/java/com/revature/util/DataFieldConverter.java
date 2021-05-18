@@ -1,6 +1,30 @@
 /*
  * File: DataFieldConverter
  * Team_d_p1_ORM
+ * Date created: 5/16/21, 1:32 AM
+ * Last Modified: 5/15/21, 7:53 PM
+ * Created by: Nicholas Recino
+ */
+
+/*
+ * File: DataFieldConverter
+ * Team_d_p1_ORM
+ * Date created: 5/16/21, 1:31 AM
+ * Last Modified: 5/15/21, 7:53 PM
+ * Created by: Nicholas Recino
+ */
+
+/*
+ * File: DataFieldConverter
+ * Team_d_p1_ORM
+ * Date created: 5/16/21, 1:31 AM
+ * Last Modified: 5/15/21, 7:53 PM
+ * Created by: Nicholas Recino
+ */
+
+/*
+ * File: DataFieldConverter
+ * Team_d_p1_ORM
  * Date created: 5/14/21, 9:34 PM
  * Last Modified: 5/14/21, 7:49 PM
  * Created by: Nicholas Recino
@@ -37,7 +61,7 @@ public interface DataFieldConverter{
     public Object javaToPostgreSQLArguments(ColumnFieldType fieldType, Object obj)throws SQLException;
 
     /**
-     *  Returns the object extracted from the results associated with column specified in poistion columnPosition
+     *  Returns the object extracted from the results associated with column specified in position columnPosition
      * @param fieldType Associated ColumnFieldType potentially might be null.
      * @param results
      * @param columnPosition

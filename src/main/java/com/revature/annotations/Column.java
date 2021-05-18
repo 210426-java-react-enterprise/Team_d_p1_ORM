@@ -1,24 +1,8 @@
 /*
  * File: Column
  * Team_d_p1_ORM
- * Date created: 5/14/21, 7:45 PM
+ * Date created: 5/16/21, 4:06 PM
  * Last Modified: 5/14/21, 7:45 PM
- * Created by: Nicholas Recino
- */
-
-/*
- * File: Column
- * Team_d_p1_ORM
- * Date created: 5/14/21, 7:44 PM
- * Last Modified: 5/14/21, 6:52 PM
- * Created by: Nicholas Recino
- */
-
-/*
- * File: Column
- * Team_d_p1_ORM
- * Date created: 5/14/21, 4:30 PM
- * Last Modified: 5/14/21, 4:21 PM
  * Created by: Nicholas Recino
  */
 
