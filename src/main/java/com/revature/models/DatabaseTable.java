@@ -64,7 +64,7 @@ public class DatabaseTable<T,ID> {
     public ColumnFieldType getFieldTypeByColumnName(String columnName) {
         if (fieldTypeNameMap == null) {
             // build our alias map if we need it
-            Map<String, ColumnFieldType> map = new HashMap<String, ColumnFieldType>();
+            Map<String, ColumnFieldType> map = new HashMap<>();
             for (ColumnFieldType fieldType : fieldTypes) {
                 map.put(fieldType.getColumnName(), fieldType);
             }

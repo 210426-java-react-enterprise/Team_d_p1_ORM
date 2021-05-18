@@ -7,7 +7,6 @@
  */
 package com.revature.types;
 
-import com.revature.models.Serial;
 import com.revature.util.DataFieldConverter;
 
 import java.sql.ResultSet;
@@ -141,15 +140,15 @@ public enum DataType implements DataFieldConverter {
             return Double.parseDouble(defaultString);
         }
     },
-    SERIAL(PostgreSQLType.SERIAL4,new Class<?>[]{Serial.class}){
+    SERIAL(PostgreSQLType.SERIAL4,new Class<?>[]{Long.class}){
         @Override
         public Object resultToJava(ColumnFieldType fieldType, ResultSet results, int columnPosition) throws SQLException {
-            return (new Serial(results.getInt(columnPosition)));
+            return ((long) results.getInt(columnPosition));
         }
 
         @Override
         public Object parseDefaultString(ColumnFieldType fieldType, String defaultString){
-            return (new Serial(Long.parseLong(defaultString)));
+            return (Long.parseLong(defaultString));
         }
     };
 
