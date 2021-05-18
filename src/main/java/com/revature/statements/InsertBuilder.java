@@ -19,11 +19,12 @@ import java.sql.SQLException;
 
 public class InsertBuilder extends StatementBuilder{
 
-    private Repo repo = new Repo(conn);
+    private Repo repo;
 
     public InsertBuilder(){
         conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
         type = StatementType.INSERT;
+        repo = new Repo(conn);
     }
 
     public ResultSet buildInsertStatement(ColumnFieldType[] fieldsData,String tableName) throws SQLException {
@@ -36,38 +37,7 @@ public class InsertBuilder extends StatementBuilder{
         sql.replace(sql.length(),sql.length(),")");
         values.replace(values.length(),values.length(),")");
         sqlStatement = conn.prepareStatement(sql.toString() + values);
-        for(int i =1; i<fieldsData.length;i++){
-            ColumnFieldType fieldData = fieldsData[i];
-            DataType dataType = fieldData.getDataType();
-            switch (dataType){
-                case STRING:
-                case CHAR:
-                    sqlStatement.setString(i, (String) fieldData.getDefaultValue());
-                    break;
-                case INTEGER:
-                case SERIAL:
-                    sqlStatement.setInt(i, (Integer) fieldData.getDefaultValue());
-                    break;
-                case BOOLEAN:
-                    sqlStatement.setBoolean(i, (Boolean) fieldData.getDefaultValue());
-                    break;
-                case DOUBLE:
-                    sqlStatement.setDouble(i, (Double) fieldData.getDefaultValue());
-                    break;
-                case LONG:
-                    sqlStatement.setLong(i, (Long) fieldData.getDefaultValue());
-                    break;
-                case FLOAT:
-                    sqlStatement.setFloat(i, (Float) fieldData.getDefaultValue());
-                    break;
-                case DATE:
-                    sqlStatement.setDate(i, (Date) fieldData.getDefaultValue());
-                    break;
-                default:
-                    dataType.javaToPostgreSQLArguments(fieldData,fieldData.getDefaultValue());
-
-            }
-        }
+        sqlStatement = parseTypeData(sqlStatement,fieldsData);
 
 //        TODO call to repo, not in this branch itself, need to refactor to include it.
         return repo.queryExecute(sqlStatement);
