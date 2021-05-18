@@ -19,6 +19,8 @@ import java.sql.SQLException;
 
 public class InsertBuilder extends StatementBuilder{
 
+    private Repo repo = new Repo(conn);
+
     public InsertBuilder(){
         conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
         type = StatementType.INSERT;
@@ -66,8 +68,8 @@ public class InsertBuilder extends StatementBuilder{
 
             }
         }
-        Repo repo = new Repo();
+
 //        TODO call to repo, not in this branch itself, need to refactor to include it.
-        return null;
+        return repo.queryExecute(sqlStatement);
     }
 }

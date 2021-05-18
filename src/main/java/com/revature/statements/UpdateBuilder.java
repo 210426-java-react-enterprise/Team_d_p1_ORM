@@ -22,26 +22,24 @@ import java.util.stream.Collectors;
 
 public class UpdateBuilder extends StatementBuilder{
 
+    private Repo repo = new Repo(conn);
+
     public UpdateBuilder(){
         conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
         type = StatementType.UPDATE;
     }
 
-    public ResultSet buildInsertStatement(ColumnFieldType[] fieldsData, String tableName,String updateConditionFieldNames) throws SQLException {
-        StringBuilder sql = new StringBuilder().append("update ").append(tableName).append(" set");
+    public ResultSet buildUpdateStatement(ColumnFieldType[] fieldsData,ColumnFieldType updateConditionFieldNames) throws SQLException {
+        StringBuilder sql = new StringBuilder().append("update ").append(updateConditionFieldNames.getTableName()).append(" set");
 
         for(ColumnFieldType fieldName:fieldsData){
             sql.append(fieldName.getColumnName()).append(" = ?,");
         }
         sql.replace(sql.length()-1,sql.length()," where");
 
-        ColumnFieldType conditionField = Arrays.stream(fieldsData)
-                                                        .filter((element)-> element.getColumnName().equals(updateConditionFieldNames))
-                                                        .collect(Collectors.toList())
-                                                        .get(0);
-        sql.append(conditionField.getColumnName())
+        sql.append(updateConditionFieldNames.getColumnName())
                 .append("=")
-                .append(conditionField.getDefaultValue().toString());
+                .append(updateConditionFieldNames.getDefaultValue().toString());
 
         sqlStatement = conn.prepareStatement(sql.toString());
         for(int i =1; i<fieldsData.length;i++){
@@ -76,8 +74,9 @@ public class UpdateBuilder extends StatementBuilder{
 
             }
         }
-        Repo repo = new Repo();
+
+
 //        TODO call to repo, not in this branch itself, need to refactor to include it.
-        return null;
+        return repo.statementExecute(sqlStatement);
     }
 }
