@@ -10,6 +10,7 @@ package com.revature.types;
 import com.revature.configurations.ColumnFieldConfig;
 import com.revature.util.DataFieldConverter;
 
+import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 
 public class ColumnFieldType {
@@ -64,7 +65,6 @@ public class ColumnFieldType {
     public void setDataType(DataType dataType) {
         this.dataType = dataType;
     }
-
     public Object getDefaultValue() {
         return defaultValue;
     }
@@ -112,4 +112,5 @@ public class ColumnFieldType {
     public void setNotNull(boolean notNull) {
         this.notNull = notNull;
     }
+
 }
