@@ -26,8 +26,9 @@ public abstract class StatementBuilder{
     protected StatementType type;
     protected PreparedStatement sqlStatement;
     protected Connection conn;
+    protected StringBuilder sql;
 
-    protected  PreparedStatement parseTypeData(PreparedStatement statement, ColumnFieldType[] fieldsData) throws SQLException {
+      protected PreparedStatement parseTypeData(PreparedStatement statement, ColumnFieldType[] fieldsData) throws SQLException {
 
         for(int i =1; i<fieldsData.length;i++){
             ColumnFieldType fieldData = fieldsData[i];
