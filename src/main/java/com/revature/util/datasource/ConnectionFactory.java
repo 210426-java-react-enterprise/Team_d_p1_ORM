@@ -18,7 +18,7 @@ import java.util.Properties;
 public class ConnectionFactory {
 
     private static ConnectionFactory connectionFactory;
-    private Properties props = new Properties();
+    private static Properties props = new Properties();
 
     static {
         try {
@@ -29,11 +29,7 @@ public class ConnectionFactory {
     }
 
     private ConnectionFactory() {
-        try {
-            props.load(new FileReader("src/main/resources/application.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public static ConnectionFactory getInstance() {
@@ -53,7 +49,8 @@ public class ConnectionFactory {
             conn = DriverManager.getConnection(
                     props.getProperty("host-url"),
                     props.getProperty("username"),
-                    props.getProperty("password"));
+                    props.getProperty("password")
+            );
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,6 +58,14 @@ public class ConnectionFactory {
 
         return conn;
 
+    }
+    // Entry point into setting the connection for the Database for the ORM from the WebApp, setup this way because if there is time, easy to change to allow for
+    // multiple connections based on a preface call
+    public static void setConnection(String hostURL, String username, String password,String schemaName){
+        String processedHostURL = "jdbc:postgresql://"+hostURL+"/postgres?schema_name:"+schemaName;
+        props.put("host-url",processedHostURL);
+        props.put("username", username);
+        props.put("password",password);
     }
 
 }
