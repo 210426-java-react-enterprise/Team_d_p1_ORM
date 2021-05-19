@@ -31,15 +31,13 @@ public class QueryBuilder extends StatementBuilder{
         if(valueToSearchFor==null) {
             sqlStatement= conn.prepareStatement(sql.toString());
         }else {
-            sql.append("where ")
+            sql.append(" where ")
             .append(conditionFieldName.getColumnName())
             .append(" = ?");
             conn.prepareStatement(sql.toString());
             sqlStatement = parseTypeData(sqlStatement, new ColumnFieldType[]{conditionFieldName});
         }
-
-
-
+        System.out.println(sql);
 //        TODO call to repo, not in this branch itself, need to refactor to include it.
         return repo.queryExecute(sqlStatement);
     }

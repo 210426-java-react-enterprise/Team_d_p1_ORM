@@ -21,7 +21,7 @@ import java.sql.SQLException;
 /**
  *
  */
-public abstract class StatementBuilder{
+public class StatementBuilder{
 
     protected StatementType type;
     protected PreparedStatement sqlStatement;

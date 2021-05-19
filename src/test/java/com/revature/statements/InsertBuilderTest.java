@@ -2,6 +2,8 @@ package com.revature.statements;
 
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
+import com.revature.types.DataType;
+import com.revature.util.datasource.ConnectionFactory;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;
@@ -10,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -34,6 +37,7 @@ public class InsertBuilderTest {
 
     @Before
     public void before() throws Exception {
+        ConnectionFactory.setConnection("bankoffsm.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","public");
         openMocks(this);
     }
 
@@ -50,16 +54,37 @@ public void after() throws Exception {
 * 
 */ 
 @Test
-public void testBuildInsertStatement() throws Exception {
-    ColumnFieldType[] fieldsData = new ColumnFieldType[3];
+public void testBuildInsertStatement() {
+    ColumnFieldType fieldData = new ColumnFieldType();
+    fieldData.setColumnName("test_column");
+    fieldData.setDefaultValue("String");
+    fieldData.setDataType(DataType.STRING);
+
+    ColumnFieldType fieldData2 = new ColumnFieldType();
+    fieldData2.setColumnName("test_column2");
+    fieldData2.setDefaultValue("String");
+    fieldData2.setDataType(DataType.STRING);
+
+    ColumnFieldType fieldData3 = new ColumnFieldType();
+    fieldData3.setColumnName("test_column3");
+    fieldData3.setDefaultValue("String");
+    fieldData3.setDataType(DataType.STRING);
+
+
+    ColumnFieldType[] fieldsData = new ColumnFieldType[]{fieldData,fieldData2,fieldData3};
     String tableName = "test_table";
 
-    when(rs.next()).thenReturn(true);
 
-    when(mockRepo.queryExecute(any())).thenReturn(rs);
-    sut.buildInsertStatement(fieldsData,tableName);
+    try {
+        when(rs.next()).thenReturn(true);
 
-} 
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
+        sut.buildInsertStatement(fieldsData,tableName);
+    } catch (SQLException throwables) {
+        throwables.printStackTrace();
+    }
+
+}
 
 
 } 

@@ -30,23 +30,23 @@ public class UpdateBuilder extends StatementBuilder{
         repo = new Repo(conn);
     }
 
+    public UpdateBuilder(Repo repo){
+        conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
+        type = StatementType.UPDATE;
+        this.repo = repo;
+    }
+
     public ResultSet buildUpdateStatement(ColumnFieldType[] fieldsData,ColumnFieldType updateConditionFieldNames) throws SQLException {
-        StringBuilder sql = new StringBuilder().append("update ").append(updateConditionFieldNames.getTableName()).append(" set");
-
+        StringBuilder sql = new StringBuilder().append("update ").append(updateConditionFieldNames.getTableName()).append(" set ");
         for(ColumnFieldType fieldName:fieldsData){
-            sql.append(fieldName.getColumnName()).append(" = ?,");
-        }
-        sql.replace(sql.length()-1,sql.length()," where");
-
+            sql.append(fieldName.getColumnName()).append(" = ?, ");        }
+        sql.replace(sql.length()-1,sql.length()," where ");
         sql.append(updateConditionFieldNames.getColumnName())
-                .append("=")
+                .append(" = ")
                 .append(updateConditionFieldNames.getDefaultValue().toString());
-
+        System.out.println(sql);
         sqlStatement = conn.prepareStatement(sql.toString());
-
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
-
-
 //        TODO call to repo, not in this branch itself, need to refactor to include it.
         return repo.statementExecute(sqlStatement);
     }

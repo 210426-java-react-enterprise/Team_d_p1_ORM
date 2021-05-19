@@ -13,7 +13,7 @@ public enum StatementType {
     /**
      * PostgreSQL statement in the form of INSERT ... FROM table ...
      */
-    INSERT(new UpdateBuilder()){
+    INSERT(new InsertBuilder()){
         @Override
         public Object createStatement(Object o) {
             return null;
@@ -33,6 +33,12 @@ public enum StatementType {
      * PostgreSQL statement in the form of DELETE FROM table ...
      */
     DELETE(new DeleteBuilder()) {
+        @Override
+        public Object createStatement(Object o) {
+            return null;
+        }
+    },
+    UPDATE(new UpdateBuilder()){
         @Override
         public Object createStatement(Object o) {
             return null;

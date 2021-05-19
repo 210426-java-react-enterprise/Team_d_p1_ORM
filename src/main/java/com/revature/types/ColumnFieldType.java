@@ -42,6 +42,10 @@ public class ColumnFieldType {
         return columnName;
     }
 
+    public void setColumnName(String columnName){
+        this.columnName = columnName;
+    }
+
     public String getTableName() {
         return tableName;
     }

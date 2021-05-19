@@ -24,6 +24,11 @@ public class DeleteBuilder extends StatementBuilder{
         type = StatementType.DELETE;
         repo = new Repo(conn);
     }
+    public DeleteBuilder(Repo repo){
+        conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
+        type = StatementType.DELETE;
+        this.repo = repo;
+    }
 
     public ResultSet buildDeleteStatement(ColumnFieldType deleteConditionFieldName) throws SQLException {
         StringBuilder sql = new StringBuilder();
@@ -31,7 +36,9 @@ public class DeleteBuilder extends StatementBuilder{
             .append(deleteConditionFieldName.getTableName())
             .append(" where ")
             .append(deleteConditionFieldName.getColumnName())
-            .append("= ?");
+            .append(" = ?");
+
+        System.out.println(sql);
         sqlStatement = conn.prepareStatement(sql.toString());
         sqlStatement = parseTypeData(sqlStatement,new ColumnFieldType[]{deleteConditionFieldName});
         return repo.statementExecute(sqlStatement);
