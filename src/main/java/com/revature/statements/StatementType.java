@@ -8,14 +8,22 @@
 
 package com.revature.statements;
 
+import java.sql.ResultSet;
+
 public enum StatementType {
 
     /**
      * PostgreSQL statement in the form of INSERT ... FROM table ...
      */
     INSERT(new InsertBuilder()){
+
         @Override
-        public Object createStatement(Object o) {
+        public <T> ResultSet createStatement(T objectToPersist) {
+            return null;
+        }
+
+        @Override
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
             return null;
         }
         //TODO change to InsertBuilder Not implemented in dev branch yet
@@ -24,8 +32,14 @@ public enum StatementType {
      * PostgreSQL statement in the form of SELECT ... FROM table ...
      */
     SELECT(new QueryBuilder()) {
+
         @Override
-        public Object createStatement(Object o) {
+        public <T> ResultSet createStatement(T objectToPersist) {
+            return null;
+        }
+
+        @Override
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
             return null;
         }
     },
@@ -33,14 +47,26 @@ public enum StatementType {
      * PostgreSQL statement in the form of DELETE FROM table ...
      */
     DELETE(new DeleteBuilder()) {
+
         @Override
-        public Object createStatement(Object o) {
+        public <T> ResultSet createStatement(T objectToPersist) {
+            return null;
+        }
+
+        @Override
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
             return null;
         }
     },
     UPDATE(new UpdateBuilder()){
+
         @Override
-        public Object createStatement(Object o) {
+        public <T> ResultSet createStatement(T objectToPersist) {
+            return null;
+        }
+
+        @Override
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
             return null;
         }
     },
@@ -48,20 +74,30 @@ public enum StatementType {
      * PostgreSQL statement in the form of CREATE TABLE, ALTER TABLE, or something returning the number of rows affected
      */
     EXECUTE(new QueryBuilder()) {
+
         @Override
-        public Object createStatement(Object o) {
+        public <T> ResultSet createStatement(T objectToPersist) {
+            return null;
+        }
+
+        @Override
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
             return null;
         }
     };
 
-    private StatementBuilder o;
+    private StatementBuilder statementBuilder;
 
-
-    StatementType(StatementBuilder o) {
-        this.o = o;
+    StatementType(StatementBuilder statementBuilder) {
+        this.statementBuilder = statementBuilder;
     }
 
-    public abstract Object createStatement(Object o);
+    public <T> ResultSet createStatement(T objectToPersist){
+        return null;
+    }
+    public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
+        return null;
+    }
 
 
 
