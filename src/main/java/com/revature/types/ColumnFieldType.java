@@ -31,12 +31,14 @@ public class ColumnFieldType {
     private DataType dataType;
     private Object defaultValue;
     private ColumnFieldConfig fieldConfig;
-    private boolean isPrimaryKey;
-    private boolean isSerial;
-    private boolean isForeignKey;
-    private boolean notNull;
-    private DataFieldConverter fieldConverter;
 
+    public ColumnFieldType(ColumnFieldConfig config){
+        implementConfig(config);
+        fieldConfig = config;
+    }
+    public ColumnFieldType(){
+
+    }
 
     public String getColumnName() {
         return columnName;
@@ -69,6 +71,7 @@ public class ColumnFieldType {
     public void setDataType(DataType dataType) {
         this.dataType = dataType;
     }
+
     public Object getDefaultValue() {
         return defaultValue;
     }
@@ -83,38 +86,21 @@ public class ColumnFieldType {
 
     public void setFieldConfig(ColumnFieldConfig fieldConfig) {
         this.fieldConfig = fieldConfig;
+        implementConfig(this.fieldConfig);
     }
 
-    public boolean isPrimaryKey() {
-        return isPrimaryKey;
+    private void implementConfig(ColumnFieldConfig config){
+        this.dataType = config.getDataType();
+        this.columnName = config.getColumnName();
     }
 
-    public void setPrimaryKey(boolean primaryKey) {
-        isPrimaryKey = primaryKey;
+    @Override
+    public String toString() {
+        return "ColumnFieldType{\n" +
+                "tableName='" + tableName + "\n" +
+                ", columnName='" + columnName + '\n' +
+                ", dataType=" + dataType + '\n' +
+                ", fieldConfig=" + fieldConfig +
+                '}'+"\n\n";
     }
-
-    public boolean isSerial() {
-        return isSerial;
-    }
-
-    public void setSerial(boolean serial) {
-        isSerial = serial;
-    }
-
-    public boolean isForeignKey() {
-        return isForeignKey;
-    }
-
-    public void setForeignKey(boolean foreignKey) {
-        isForeignKey = foreignKey;
-    }
-
-    public boolean isNotNull() {
-        return notNull;
-    }
-
-    public void setNotNull(boolean notNull) {
-        this.notNull = notNull;
-    }
-
 }

@@ -16,9 +16,5 @@ import java.lang.annotation.*;
 public @interface Column {
     String columnName() default "";
     boolean notNull() default false;
-    boolean primaryKey() default false;
-    boolean foreignKey() default false;
     boolean unique() default false;
-    boolean serialID() default false;
-
 }

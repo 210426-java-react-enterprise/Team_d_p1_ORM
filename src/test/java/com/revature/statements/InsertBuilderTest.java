@@ -57,17 +57,17 @@ public void after() throws Exception {
 public void testBuildInsertStatement() {
     ColumnFieldType fieldData = new ColumnFieldType();
     fieldData.setColumnName("test_column");
-    fieldData.setDefaultValue("String");
+    fieldData.setDefaultValue("String1");
     fieldData.setDataType(DataType.STRING);
 
     ColumnFieldType fieldData2 = new ColumnFieldType();
     fieldData2.setColumnName("test_column2");
-    fieldData2.setDefaultValue("String");
+    fieldData2.setDefaultValue("String2");
     fieldData2.setDataType(DataType.STRING);
 
     ColumnFieldType fieldData3 = new ColumnFieldType();
     fieldData3.setColumnName("test_column3");
-    fieldData3.setDefaultValue("String");
+    fieldData3.setDefaultValue("String3");
     fieldData3.setDataType(DataType.STRING);
 
 

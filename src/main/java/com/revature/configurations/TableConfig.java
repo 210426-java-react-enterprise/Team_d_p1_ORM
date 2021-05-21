@@ -11,42 +11,47 @@ import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 import com.revature.annotations.Column;
 import com.revature.types.ColumnFieldType;
+import com.revature.types.DataType;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TableConfig<T> {
 
     private Class<T> dataClass;
     private String tableName;
-    private List<ColumnFieldConfig> fieldConfigs;
-    private ColumnFieldType[] fieldTypes;
+    private List<ColumnFieldType> fieldTypes;
 
 
     /**
      * Setup a table config associated with the dataClass and field configurations. The table-name will be extracted
      * from the dataClass.
      */
-    public TableConfig(Class<T> dataClass, List<ColumnFieldConfig> fieldConfigs) {
-        this(dataClass, extractTableName(dataClass), fieldConfigs);
+    public TableConfig(Class<T> dataClass){
+        this.dataClass = dataClass;
+        this.tableName = extractTableName(dataClass);
+        this.fieldTypes = extractFieldTypes(dataClass);
     }
 
     /**
      * Setup a table config associated with the dataClass, table-name, and field configurations.
      */
-    public TableConfig(Class<T> dataClass, String tableName, List<ColumnFieldConfig> fieldConfigs) {
+    public TableConfig(Class<T> dataClass, String tableName) {
         this.dataClass = dataClass;
         this.tableName = tableName;
-        this.fieldConfigs = fieldConfigs;
+        this.fieldTypes = extractFieldTypes(dataClass);
+
     }
 
-    private TableConfig(Class<T> dataClass, String tableName, ColumnFieldType[] fieldTypes) {
+    private TableConfig(Class<T> dataClass, String tableName, List<ColumnFieldType> fieldTypes) {
         this.dataClass = dataClass;
         this.tableName = tableName;
         this.fieldTypes = fieldTypes;
     }
+
 
 
     public Class<T> getDataClass() {
@@ -65,19 +70,11 @@ public class TableConfig<T> {
         this.tableName = tableName;
     }
 
-    public List<ColumnFieldConfig> getFieldConfigs() {
-        return fieldConfigs;
-    }
-
-    public void setFieldConfigs(List<ColumnFieldConfig> fieldConfigs) {
-        this.fieldConfigs = fieldConfigs;
-    }
-
-    public ColumnFieldType[] getFieldTypes() {
+    public List<ColumnFieldType> getFieldTypes() {
         return fieldTypes;
     }
 
-    public void setFieldTypes(ColumnFieldType[] fieldTypes) {
+    public void setFieldTypes(List<ColumnFieldType> fieldTypes) {
         this.fieldTypes = fieldTypes;
     }
 
@@ -87,7 +84,7 @@ public class TableConfig<T> {
      */
     public static <T> TableConfig<T> fromClass(Class<T> clazz) throws SQLException {
         String tableName = extractTableName(clazz);
-        return new TableConfig<>(clazz, tableName, extractFieldTypes(clazz));
+        return new TableConfig<>(clazz, tableName);
     }
 
 // TODO might need to put these features in their own behaviour/service layer unless configs count as that
@@ -106,19 +103,38 @@ public class TableConfig<T> {
         return name;
     }
 
-    public static <T> ColumnFieldType[] extractFieldTypes(Class<T> clazz){
+    public List<ColumnFieldType> extractFieldTypes(Class<T> clazz){
         List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
-        for(Class<?> classParse = clazz; clazz!=null; classParse = classParse.getSuperclass()){
+        for(Class<?> classParse = clazz; classParse!=null; classParse = classParse.getSuperclass()){
             for(Field field: classParse.getDeclaredFields()){
                 //TODO Need to define a ColumnFieldType Properly, above logic will grab all fields associated with a class object
                Column column = field.getAnnotation(Column.class);
-                ColumnFieldType fieldInfo = new ColumnFieldType();
-                fieldInfo.setNotNull(column.notNull());
-                if(fieldInfo!=null)
-                    columnFieldTypes.add(fieldInfo);
+                if (column == null) {
+                    continue;
+                }
+                ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
+                String columnName = column.columnName();
+                fieldConfig.setColumnName((columnName.equals("") ? field.getName() : columnName));
+                fieldConfig.setNotNull(column.notNull());
+                fieldConfig.setUnique(column.unique());
+                fieldConfig.setDataType(DataType.getDataType(field.getType()));
+                fieldConfig.setFieldName(field.getName());
+                ColumnFieldType fieldInfo = new ColumnFieldType(fieldConfig);
+                fieldInfo.setTableName(tableName);
+                fieldInfo.setField(field);
+                columnFieldTypes.add(fieldInfo);
             }
         }
-        return columnFieldTypes.toArray(new ColumnFieldType[columnFieldTypes.size()]);
+//        Field field = new TableConfig().getClass().getDeclaredFields()[0].get();
+        return  columnFieldTypes;
     }
 
+    @Override
+    public String toString() {
+        return "TableConfig{" +
+                "dataClass=" + dataClass +
+                ", tableName='" + tableName + '\'' +
+                ", fieldTypes=" + fieldTypes +
+                '}';
+    }
 }

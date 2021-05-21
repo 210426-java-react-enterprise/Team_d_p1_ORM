@@ -176,6 +176,14 @@ public enum DataType implements DataFieldConverter {
         return postgreSQLType;
     }
 
+    public static DataType getDataType(Class<?> clazz){
+        for(DataType element:values()){
+            if(element.classes[0] == clazz)
+                return element;
+        }
+        return null;
+    }
+
 
 
 }

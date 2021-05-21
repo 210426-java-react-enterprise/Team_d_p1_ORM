@@ -58,8 +58,8 @@ public void testBuildDeleteStatement(){
     ColumnFieldType fieldData = new ColumnFieldType();
     fieldData.setTableName("test_table");
     fieldData.setColumnName("test_column");
-    fieldData.setDefaultValue("delete");
-    fieldData.setDataType(DataType.STRING);
+    fieldData.setDefaultValue(10);
+    fieldData.setDataType(DataType.INTEGER);
 
 
     try {

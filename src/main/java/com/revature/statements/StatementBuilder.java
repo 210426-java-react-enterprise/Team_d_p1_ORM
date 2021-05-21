@@ -30,8 +30,8 @@ public class StatementBuilder{
 
       protected PreparedStatement parseTypeData(PreparedStatement statement, ColumnFieldType[] fieldsData) throws SQLException {
 
-        for(int i =1; i<fieldsData.length;i++){
-            ColumnFieldType fieldData = fieldsData[i];
+        for(int i =1; i<fieldsData.length+1;i++){
+            ColumnFieldType fieldData = fieldsData[i-1];
             DataType dataType = fieldData.getDataType();
             switch (dataType){
                 case STRING:

@@ -30,9 +30,6 @@ public class ColumnFieldConfig {
     private String columnName;
     private DataType dataType;
     private boolean notNull;
-    private boolean serialID;
-    private boolean primaryKey;
-    private boolean foreignKey;
     private boolean unique;
 
     public String getFieldName() {
@@ -67,35 +64,19 @@ public class ColumnFieldConfig {
         this.notNull = notNull;
     }
 
-    public boolean isSerialID() {
-        return serialID;
-    }
-
-    public void setSerialID(boolean serialID) {
-        this.serialID = serialID;
-    }
-
-    public boolean isPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(boolean primaryKey) {
-        this.primaryKey = primaryKey;
-    }
-
-    public boolean isForeignKey() {
-        return foreignKey;
-    }
-
-    public void setForeignKey(boolean foreignKey) {
-        this.foreignKey = foreignKey;
-    }
-
     public boolean isUnique() {
         return unique;
     }
 
     public void setUnique(boolean unique) {
         this.unique = unique;
+    }
+
+    @Override
+    public String toString() {
+        return "ColumnFieldConfig{ " +
+                " notNull = " + notNull +
+                ", unique = " + unique +
+                " }";
     }
 }
