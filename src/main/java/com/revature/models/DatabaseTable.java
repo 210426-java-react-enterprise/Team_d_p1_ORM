@@ -15,6 +15,7 @@ import com.revature.types.ColumnFieldType;
 import java.lang.reflect.Constructor;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DatabaseTable<T,ID> {
@@ -22,7 +23,7 @@ public class DatabaseTable<T,ID> {
     private final Repo<T,ID> repo;
     private final Class<T> dataClass;
     private final String tableName;
-    private final ColumnFieldType[] fieldTypes;
+    private final List<ColumnFieldType> fieldTypes;
     private final ColumnFieldType idField;
     private Constructor<T> constructor;
     private Map<String, ColumnFieldType> fieldTypeNameMap;
@@ -49,7 +50,7 @@ public class DatabaseTable<T,ID> {
         return tableName;
     }
 
-    public ColumnFieldType[] getFieldTypes() {
+    public List<ColumnFieldType> getFieldTypes() {
         return fieldTypes;
     }
 

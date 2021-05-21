@@ -37,10 +37,9 @@ public class DeleteBuilder extends StatementBuilder{
             .append(" where ")
             .append(deleteConditionFieldName.getColumnName())
             .append(" = ?");
-
-        System.out.println(sql);
         sqlStatement = conn.prepareStatement(sql.toString());
         sqlStatement = parseTypeData(sqlStatement,new ColumnFieldType[]{deleteConditionFieldName});
+        System.out.println(sqlStatement);
         return repo.statementExecute(sqlStatement);
     }
 
