@@ -8,6 +8,8 @@
 
 package com.revature.statements;
 
+import java.sql.ResultSet;
+
 public enum StatementType {
 
     /**
@@ -16,13 +18,13 @@ public enum StatementType {
     INSERT(new InsertBuilder()){
 
         @Override
-        public <T> T createStatement(T objectToPersist) {
+        public <T> ResultSet createStatement(T objectToPersist) {
             return null;
         }
 
         @Override
-        public <T> T createStatementWithCondition(T objectToPersist, String conditionalParam){
-            return objectToPersist;
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
+            return null;
         }
         //TODO change to InsertBuilder Not implemented in dev branch yet
     },
@@ -32,13 +34,13 @@ public enum StatementType {
     SELECT(new QueryBuilder()) {
 
         @Override
-        public <T> T createStatement(T objectToPersist) {
+        public <T> ResultSet createStatement(T objectToPersist) {
             return null;
         }
 
         @Override
-        public <T> T createStatementWithCondition(T objectToPersist, String conditionalParam){
-            return objectToPersist;
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
+            return null;
         }
     },
     /**
@@ -47,25 +49,25 @@ public enum StatementType {
     DELETE(new DeleteBuilder()) {
 
         @Override
-        public <T> T createStatement(T objectToPersist) {
+        public <T> ResultSet createStatement(T objectToPersist) {
             return null;
         }
 
         @Override
-        public <T> T createStatementWithCondition(T objectToPersist, String conditionalParam){
-            return objectToPersist;
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
+            return null;
         }
     },
     UPDATE(new UpdateBuilder()){
 
         @Override
-        public <T> T createStatement(T objectToPersist) {
+        public <T> ResultSet createStatement(T objectToPersist) {
             return null;
         }
 
         @Override
-        public <T> T createStatementWithCondition(T objectToPersist, String conditionalParam){
-            return objectToPersist;
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
+            return null;
         }
     },
     /**
@@ -74,13 +76,13 @@ public enum StatementType {
     EXECUTE(new QueryBuilder()) {
 
         @Override
-        public <T> T createStatement(T objectToPersist) {
-            return objectToPersist;
+        public <T> ResultSet createStatement(T objectToPersist) {
+            return null;
         }
 
         @Override
-        public <T> T createStatementWithCondition(T objectToPersist, String conditionalParam){
-            return objectToPersist;
+        public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
+            return null;
         }
     };
 
@@ -90,11 +92,11 @@ public enum StatementType {
         this.statementBuilder = statementBuilder;
     }
 
-    public <T> T createStatement(T objectToPersist){
-        return objectToPersist;
+    public <T> ResultSet createStatement(T objectToPersist){
+        return null;
     }
-    public <T> T createStatementWithCondition(T objectToPersist, String conditionalParam){
-        return objectToPersist;
+    public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam){
+        return null;
     }
 
 
