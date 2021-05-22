@@ -41,7 +41,6 @@ public class InsertBuilderTest {
         private long testLong = 3478L;
     }
 
-
     public TestClass testClass;
 
 

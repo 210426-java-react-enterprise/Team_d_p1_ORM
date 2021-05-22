@@ -47,19 +47,16 @@ public class DeleteBuilder extends StatementBuilder{
             return buildDeleteStatement(conditionFieldName[0]);
         }else {
             StringBuilder sql = new StringBuilder().append("delete from ").append(tableName);
-            for(ColumnFieldType columnFieldType:conditionFieldName){
-                sql.append(" where ")
-                        .append(columnFieldType.getColumnName())
-                        .append(" = ?");
-                conn.prepareStatement(sql.toString());
-                sqlStatement = parseTypeData(sqlStatement, conditionFieldName);
+            sql.append(" where ");
+            for(ColumnFieldType columnFieldType:conditionFieldName) {
+                sql.append(columnFieldType.getColumnName()).append(" = ?");
             }
-
+                sqlStatement = conn.prepareStatement(sql.toString());
+                sqlStatement = parseTypeData(sqlStatement, conditionFieldName);
         }
         System.out.println(sqlStatement);
         return repo.queryExecute(sqlStatement);
     }
-
 
     @Override
     protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws ImproperConfigurationException, SQLException {

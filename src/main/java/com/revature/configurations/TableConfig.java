@@ -130,7 +130,7 @@ public class TableConfig {
     }
     private ColumnFieldConfig columnFieldConfigSetup(ColumnFieldConfig fieldConfig,Column column,Field field){
         String columnName = column.columnName();
-        fieldConfig.setColumnName((columnName.equals("") ? field.getName() : columnName));
+        fieldConfig.setColumnName((columnName.equals("") ? field.getName().toLowerCase() : columnName));
         fieldConfig.setNotNull(column.notNull());
         fieldConfig.setUnique(column.unique());
         fieldConfig.setDataType(DataType.getDataType(field.getType()));

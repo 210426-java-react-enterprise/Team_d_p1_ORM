@@ -34,12 +34,12 @@ public class QueryBuilder extends StatementBuilder{
         StringBuilder sql = new StringBuilder().append("select * from ").append(conditionFieldName.getTableName());
         Object valueToSearchFor = conditionFieldName.getDefaultValue();
         if(valueToSearchFor==null) {
-            sqlStatement= conn.prepareStatement(sql.toString());
+            sqlStatement = conn.prepareStatement(sql.toString());
         }else {
             sql.append(" where ")
             .append(conditionFieldName.getColumnName())
             .append(" = ?");
-            conn.prepareStatement(sql.toString());
+            sqlStatement = conn.prepareStatement(sql.toString());
             sqlStatement = parseTypeData(sqlStatement, new ColumnFieldType[]{conditionFieldName});
         }
         System.out.println(sql);
