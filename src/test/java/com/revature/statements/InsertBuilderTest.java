@@ -1,5 +1,7 @@
 package com.revature.statements; 
 
+import com.revature.annotations.Column;
+import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
 import com.revature.types.DataType;
@@ -23,8 +25,26 @@ import static org.mockito.MockitoAnnotations.openMocks;
 * @author <Authors name> 
 * @since <pre>May 18, 2021</pre> 
 * @version 1.0 
-*/ 
-public class InsertBuilderTest { 
+*/
+
+
+public class InsertBuilderTest {
+
+    protected static class TestClass{
+        @Column(columnName = "Test Column 1",notNull = true)
+        private int testInt = 18;
+        @Column(columnName = "Test Column 2")
+        private String testString = "test me";
+        @Column
+        private int testInteger = 12;
+        @Column
+        private long testLong = 3478L;
+    }
+
+    public TestClass testClass;
+
+
+
 
     @InjectMocks
     InsertBuilder sut;
@@ -37,6 +57,7 @@ public class InsertBuilderTest {
 
     @Before
     public void before() throws Exception {
+        testClass = new TestClass();
         ConnectionFactory.setConnection("bankoffsm.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","public");
         openMocks(this);
     }
@@ -83,8 +104,12 @@ public void testBuildInsertStatement() {
     } catch (SQLException throwables) {
         throwables.printStackTrace();
     }
-
 }
+
+    @Test
+    public void testBuildStatementIntegration() throws SQLException, ImproperConfigurationException {
+        sut.buildStatement(testClass);
+    }
 
 
 } 

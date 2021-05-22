@@ -1,5 +1,7 @@
 package com.revature.statements;
 
+import com.revature.annotations.Column;
+import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
 import com.revature.types.DataType;
@@ -12,6 +14,7 @@ import org.mockito.Mock;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -26,6 +29,19 @@ import static org.mockito.MockitoAnnotations.openMocks;
 */
 public class DeleteBuilderTest {
 
+    protected static class TestClass{
+        @Column(notNull = true)
+        private float testFloat = 18.0F;
+        @Column(columnName = "Test Column 2")
+        private Date testDate = new Date();
+        @Column
+        private boolean testBool = true;
+        @Column
+        private double testDouble = 3478.01;
+    }
+
+    public TestClass testClass;
+
     @InjectMocks
     DeleteBuilder sut;
 
@@ -37,6 +53,7 @@ public class DeleteBuilderTest {
 
     @Before
     public void before() throws Exception {
+        testClass = new TestClass();
         ConnectionFactory.setConnection("bankoffsm.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","public");
         openMocks(this);
     }
@@ -46,6 +63,7 @@ public class DeleteBuilderTest {
         sut = null;
         mockRepo = null;
         rs = null;
+        testClass = null;
     }
 
     /**
@@ -70,7 +88,15 @@ public void testBuildDeleteStatement(){
     } catch (SQLException throwables) {
         throwables.printStackTrace();
     }
-} 
+}
+    @Test
+    public void testDeleteStatementIntegration() throws SQLException, ImproperConfigurationException {
+        sut.buildStatement(testClass,"testbool");
+    }
+    @Test
+    public void testDeleteStatementIntegrationWithMultipleFields() throws SQLException, ImproperConfigurationException {
+        sut.buildStatement(testClass,"testbool","testdouble","testfloat");
+    }
 
 
 } 

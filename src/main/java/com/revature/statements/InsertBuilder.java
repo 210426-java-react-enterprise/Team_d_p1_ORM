@@ -9,6 +9,7 @@
 package com.revature.statements;
 
 import com.revature.configurations.TableConfig;
+import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
 import com.revature.types.DataType;
@@ -22,12 +23,8 @@ public class InsertBuilder extends StatementBuilder{
 
     private Repo repo;
 
-    public InsertBuilder(){
-
-    }
-
     public InsertBuilder(Repo repo){
-        conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
+        conn = ConnectionFactory.getInstance().getConnection();
         type = StatementType.INSERT;
         this.repo = repo;
     }
@@ -44,18 +41,13 @@ public class InsertBuilder extends StatementBuilder{
         values.replace(values.length()-1,values.length(),")");
         sqlStatement = conn.prepareStatement(sql.toString() + values);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
-//        TODO call to repo, not in this branch itself, need to refactor to include it.
         System.out.println(sqlStatement);
         return repo.queryExecute(sqlStatement);
     }
 
-
     @Override
-    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException {
-        if(conditionalFieldNames.length!=0){
-            return null;
-        }
-        TableConfig tableConfig = new TableConfig(objectToBePersisted.getClass());
+    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
+        TableConfig tableConfig = new TableConfig(objectToBePersisted);
         return buildInsertStatement(tableConfig.getFieldTypes().toArray(new ColumnFieldType[0]), tableConfig.getTableName());
     }
 }

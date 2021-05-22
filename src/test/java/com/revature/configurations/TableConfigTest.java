@@ -14,22 +14,25 @@ import org.junit.After;
 * @version 1.0 
 */ 
 public class TableConfigTest {
-    public TableConfig<?> sut;
+    public TableConfig sut;
+    public TestClass testClass;
 
 
-protected class TestClass{
+protected static class TestClass{
     @Column(columnName = "Test Column 1",notNull = true)
-    private int testInt = 0;
+    private int testInt = 18;
     @Column(columnName = "Test Column 2")
-    private String testString = "test";
+    private String testString = "test me";
     @Column
-    private int testInteger = 0;
+    private int testInteger = 12;
     @Column
-    private long testLong = 0;
+    private long testLong = 3478L;
 }
 @Before
 public void before() throws Exception {
-    sut = new TableConfig<>(TestClass.class);
+    testClass = new TestClass();
+    sut = new TableConfig(testClass);
+
 } 
 
 @After

@@ -9,6 +9,7 @@
 package com.revature.util;
 
 import com.revature.models.DatabaseTable;
+import com.revature.repos.Repo;
 import com.revature.statements.*;
 import com.revature.util.datasource.ConnectionFactory;
 
@@ -20,14 +21,17 @@ public class ORMState {
     private final Connection conn;
     private HashMap<String,DatabaseTable<?>> databaseTables;
     public static HashMap<String, StatementBuilder> sqlBuilders;
+    private Repo repo;
 
     private ORMState(){
-        sqlBuilders = new HashMap<>();
-        sqlBuilders.put("insert",new InsertBuilder());
-        sqlBuilders.put("delete",new DeleteBuilder());
-        sqlBuilders.put("query",new QueryBuilder());
-        sqlBuilders.put("update",new UpdateBuilder());
         conn = ConnectionFactory.getInstance().getConnection();
+        repo = new Repo(conn);
+        sqlBuilders = new HashMap<>();
+        sqlBuilders.put("insert",new InsertBuilder(repo));
+        sqlBuilders.put("delete",new DeleteBuilder(repo));
+        sqlBuilders.put("query",new QueryBuilder(repo));
+        sqlBuilders.put("update",new UpdateBuilder(repo));
+
     }
 
     public static ORMState getInstance(){
