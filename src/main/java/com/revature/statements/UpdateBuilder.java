@@ -10,15 +10,9 @@ package com.revature.statements;
 
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
-import com.revature.types.DataType;
 import com.revature.util.datasource.ConnectionFactory;
-
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class UpdateBuilder extends StatementBuilder{
 
@@ -49,5 +43,11 @@ public class UpdateBuilder extends StatementBuilder{
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
 //        TODO call to repo, not in this branch itself, need to refactor to include it.
         return repo.statementExecute(sqlStatement);
+    }
+
+    @Override
+    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) {
+
+        return null;
     }
 }

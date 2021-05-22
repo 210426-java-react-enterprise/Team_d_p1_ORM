@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Repo <T,ID>{
+public class Repo {
     Connection conn;
 
     public Repo(Connection conn){

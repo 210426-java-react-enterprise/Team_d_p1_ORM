@@ -18,22 +18,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DatabaseTable<T,ID> {
+public class DatabaseTable<T> {
 
-    private final Repo<T,ID> repo;
-    private final Class<T> dataClass;
+    private final Repo repo;
+    private final Class<?> dataClass;
     private final String tableName;
     private final List<ColumnFieldType> fieldTypes;
     private final ColumnFieldType idField;
     private Constructor<T> constructor;
     private Map<String, ColumnFieldType> fieldTypeNameMap;
 
-    public DatabaseTable(Repo<T,ID> repo, Class<T> dataClass)throws SQLException{
+    public DatabaseTable(Repo repo, Class<?> dataClass)throws SQLException{
         this(repo,TableConfig.fromClass(dataClass));
 
     }
 
-    public DatabaseTable(Repo<T,ID> repo, TableConfig<T> tableConfig )throws SQLException{
+    public DatabaseTable(Repo repo, TableConfig tableConfig )throws SQLException{
         this.repo = repo;
         this.dataClass = tableConfig.getDataClass();
         this.tableName = tableConfig.getTableName();
@@ -42,7 +42,7 @@ public class DatabaseTable<T,ID> {
         this.idField = null;
     }
 
-    public Class<T> getDataClass() {
+    public Class<?> getDataClass() {
         return dataClass;
     }
 
