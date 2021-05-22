@@ -50,4 +50,12 @@ public class InsertBuilder extends StatementBuilder{
     }
 
 
+    @Override
+    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException {
+        if(conditionalFieldNames.length!=0){
+            return null;
+        }
+        TableConfig tableConfig = new TableConfig(objectToBePersisted.getClass());
+        return buildInsertStatement(tableConfig.getFieldTypes().toArray(new ColumnFieldType[0]), tableConfig.getTableName());
+    }
 }

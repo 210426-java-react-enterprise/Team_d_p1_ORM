@@ -41,6 +41,11 @@ public class QueryBuilder extends StatementBuilder{
 //        TODO call to repo, not in this branch itself, need to refactor to include it.
         return repo.queryExecute(sqlStatement);
     }
+
+    @Override
+    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) {
+        return null;
+    }
 }
 
 

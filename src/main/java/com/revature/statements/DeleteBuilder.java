@@ -44,4 +44,8 @@ public class DeleteBuilder extends StatementBuilder{
     }
 
 
+    @Override
+    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) {
+        return null;
+    }
 }

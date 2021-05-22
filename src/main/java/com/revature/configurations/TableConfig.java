@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TableConfig<T> {
+public class TableConfig {
 
-    private Class<T> dataClass;
+    private Class<?> dataClass;
     private String tableName;
     private List<ColumnFieldType> fieldTypes;
 
@@ -30,7 +30,7 @@ public class TableConfig<T> {
      * Setup a table config associated with the dataClass and field configurations. The table-name will be extracted
      * from the dataClass.
      */
-    public TableConfig(Class<T> dataClass){
+    public TableConfig(Class<?> dataClass){
         this.dataClass = dataClass;
         this.tableName = extractTableName(dataClass);
         this.fieldTypes = extractFieldTypes(dataClass);
@@ -39,14 +39,14 @@ public class TableConfig<T> {
     /**
      * Setup a table config associated with the dataClass, table-name, and field configurations.
      */
-    public TableConfig(Class<T> dataClass, String tableName) {
+    public TableConfig(Class<?> dataClass, String tableName) {
         this.dataClass = dataClass;
         this.tableName = tableName;
         this.fieldTypes = extractFieldTypes(dataClass);
 
     }
 
-    private TableConfig(Class<T> dataClass, String tableName, List<ColumnFieldType> fieldTypes) {
+    private TableConfig(Class<?> dataClass, String tableName, List<ColumnFieldType> fieldTypes) {
         this.dataClass = dataClass;
         this.tableName = tableName;
         this.fieldTypes = fieldTypes;
@@ -54,11 +54,11 @@ public class TableConfig<T> {
 
 
 
-    public Class<T> getDataClass() {
+    public Class<?> getDataClass() {
         return dataClass;
     }
 
-    public void setDataClass(Class<T> dataClass) {
+    public void setDataClass(Class<?> dataClass) {
         this.dataClass = dataClass;
     }
 
@@ -82,9 +82,9 @@ public class TableConfig<T> {
      * Extract the TableConfig for a particular class by looking for class and field annotations. This is used
      *  internally by other classes to configure a class.
      */
-    public static <T> TableConfig<T> fromClass(Class<T> clazz) throws SQLException {
+    public static TableConfig fromClass(Class<?> clazz) throws SQLException {
         String tableName = extractTableName(clazz);
-        return new TableConfig<>(clazz, tableName);
+        return new TableConfig(clazz, tableName);
     }
 
 // TODO might need to put these features in their own behaviour/service layer unless configs count as that
@@ -92,7 +92,7 @@ public class TableConfig<T> {
      * Extracts and return the table name for a class seeing first if the name specified in the annotation is present and if not,
      * then simply making the class name lowercase the table name.
      */
-    public static <T> String extractTableName(Class<T> clazz) {
+    public static  String extractTableName(Class<?> clazz) {
         Table table = clazz.getAnnotation(Table.class);
         String name = null;
         if (table != null && table.name().length() > 0) {
@@ -103,7 +103,7 @@ public class TableConfig<T> {
         return name;
     }
 
-    public List<ColumnFieldType> extractFieldTypes(Class<T> clazz){
+    public List<ColumnFieldType> extractFieldTypes(Class<?> clazz){
         List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
         for(Class<?> classParse = clazz; classParse!=null; classParse = classParse.getSuperclass()){
             for(Field field: classParse.getDeclaredFields()){

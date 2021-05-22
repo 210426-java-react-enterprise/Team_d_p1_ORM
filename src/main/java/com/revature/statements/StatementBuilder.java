@@ -13,15 +13,12 @@ package com.revature.statements;
 import com.revature.types.ColumnFieldType;
 import com.revature.types.DataType;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  *
  */
-public class StatementBuilder{
+public abstract class StatementBuilder{
 
     protected StatementType type;
     protected PreparedStatement sqlStatement;
@@ -64,4 +61,6 @@ public class StatementBuilder{
         }
         return statement;
     }
+
+    protected abstract ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException;
 }
