@@ -56,7 +56,6 @@ public class UpdateBuilder extends StatementBuilder{
                     .append(" = ")
                     .append(fieldType.getDefaultValue().toString());
         }
-        System.out.println(sql);
         sqlStatement = conn.prepareStatement(sql.toString());
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
         return repo.statementExecute(sqlStatement);

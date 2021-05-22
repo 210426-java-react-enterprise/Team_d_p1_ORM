@@ -42,14 +42,7 @@ import java.sql.SQLException;
  */
 public interface DataFieldConverter{
 
-    /**
-     *  Converts a default String using a specified column field type, and returns the appropriate argument to a PSQL insert or update statement.
-     * @param fieldType
-     * @param defaultString
-     * @return Returns the appropriate argument to a PSQL insert or update statement.
-     * @throws SQLException
-     */
-    public Object parseDefaultString(ColumnFieldType fieldType, String defaultString)throws SQLException;
+
 
     /**
      * Converts a Java Object(Reflection) and returns the appropriate argument to a PSQL insert or update statement.
@@ -60,15 +53,6 @@ public interface DataFieldConverter{
      */
     public Object javaToPostgreSQLArguments(ColumnFieldType fieldType, Object obj)throws SQLException;
 
-    /**
-     *  Returns the object extracted from the results associated with column specified in position columnPosition
-     * @param fieldType Associated ColumnFieldType potentially might be null.
-     * @param results
-     * @param columnPosition
-     * @return
-     * @throws SQLException
-     */
-    public Object resultToJava(ColumnFieldType fieldType, ResultSet results, int columnPosition) throws SQLException;
 
     /**
      * Returns the Postgres data type that is stored in the database for specified argument.

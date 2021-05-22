@@ -11,6 +11,7 @@ import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 import com.revature.annotations.Column;
 import com.revature.exception.ImproperConfigurationException;
+import com.revature.services.ExtractionService;
 import com.revature.types.ColumnFieldType;
 import com.revature.types.DataType;
 
@@ -31,15 +32,11 @@ public class TableConfig {
      * Setup a table config associated with the dataClass and field configurations. The table-name will be extracted
      * from the dataClass.
      */
-    public TableConfig(Class<?> dataClass){
-        this.dataClass = dataClass;
-        this.tableName = extractTableName(dataClass);
-        this.fieldTypes = extractFieldTypes(dataClass);
-    }
+
 
     public TableConfig(Object objectToBePersisted) throws ImproperConfigurationException {
         this.dataClass = objectToBePersisted.getClass();
-        this.tableName = extractTableName(dataClass);
+        this.tableName = ExtractionService.extractTableName(dataClass);
         extractData(objectToBePersisted);
     }
 
@@ -49,8 +46,6 @@ public class TableConfig {
     public TableConfig(Class<?> dataClass, String tableName) {
         this.dataClass = dataClass;
         this.tableName = tableName;
-        this.fieldTypes = extractFieldTypes(dataClass);
-
     }
 
     private TableConfig(Class<?> dataClass, String tableName, List<ColumnFieldType> fieldTypes) {
@@ -90,81 +85,12 @@ public class TableConfig {
      *  internally by other classes to configure a class.
      */
     public static TableConfig fromClass(Class<?> clazz) throws SQLException {
-        String tableName = extractTableName(clazz);
+        String tableName = ExtractionService.extractTableName(clazz);
         return new TableConfig(clazz, tableName);
     }
 
-// TODO might need to put these features in their own behaviour/service layer unless configs count as that
-    /**
-     * Extracts and return the table name for a class seeing first if the name specified in the annotation is present and if not,
-     * then simply making the class name lowercase the table name.
-     */
-    public static  String extractTableName(Class<?> clazz) {
-        Table table = clazz.getAnnotation(Table.class);
-        String name = null;
-        if (table != null && table.name().length() > 0) {
-            name = table.name();
-        } else {
-                name = clazz.getSimpleName().toLowerCase();
-            }
-        return name;
-    }
-
-    private List<ColumnFieldType> extractFieldTypes(Class<?> clazz){
-        List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
-        for(Class<?> classParse = clazz; classParse!=null; classParse = classParse.getSuperclass()){
-            for(Field field: classParse.getDeclaredFields()){
-               Column column = field.getAnnotation(Column.class);
-                if (column == null) {
-                    continue;
-                }
-                ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
-
-                ColumnFieldType fieldInfo = new ColumnFieldType(columnFieldConfigSetup(fieldConfig,column,field));
-                fieldInfo.setTableName(tableName);
-                fieldInfo.setField(field);
-                columnFieldTypes.add(fieldInfo);
-            }
-        }
-        return  columnFieldTypes;
-    }
-    private ColumnFieldConfig columnFieldConfigSetup(ColumnFieldConfig fieldConfig,Column column,Field field){
-        String columnName = column.columnName();
-        fieldConfig.setColumnName((columnName.equals("") ? field.getName().toLowerCase() : columnName));
-        fieldConfig.setNotNull(column.notNull());
-        fieldConfig.setUnique(column.unique());
-        fieldConfig.setDataType(DataType.getDataType(field.getType()));
-        fieldConfig.setFieldName(field.getName());
-        return fieldConfig;
-    }
-
     public void extractData(Object objectToPersist) throws ImproperConfigurationException {
-        Class<?> clazz = objectToPersist.getClass();
-        List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
-        for(Class<?> classParse = clazz; classParse!=null; classParse = classParse.getSuperclass()){
-            for(Field field: classParse.getDeclaredFields()){
-                field.setAccessible(true);
-                Column column = field.getAnnotation(Column.class);
-                if (column == null) {
-                    continue;
-                }
-                ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
-                ColumnFieldType fieldInfo = new ColumnFieldType(columnFieldConfigSetup(fieldConfig,column,field));
-                try {
-                    fieldInfo.setDefaultValue(field.get(objectToPersist));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }catch(NullPointerException e){
-                    if(column.notNull()){
-                        throw new ImproperConfigurationException("Value that is classified as not null, is infact null");
-                    }
-                }
-                fieldInfo.setTableName(tableName);
-                fieldInfo.setField(field);
-                columnFieldTypes.add(fieldInfo);
-            }
-        }
-        this.fieldTypes = columnFieldTypes;
+        this.fieldTypes = ExtractionService.extractData(objectToPersist,tableName);
     }
 
     @Override

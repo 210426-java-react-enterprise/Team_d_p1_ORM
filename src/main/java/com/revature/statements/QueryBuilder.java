@@ -50,13 +50,16 @@ public class QueryBuilder extends StatementBuilder{
             return buildSelectStatement(conditionFieldName[0]);
         }else {
             StringBuilder sql = new StringBuilder().append("select * from ").append(tableName);
+            sql.append(" where ");
             for(ColumnFieldType columnFieldType:conditionFieldName){
-                sql.append(" where ")
-                        .append(columnFieldType.getColumnName())
-                        .append(" = ?");
-                conn.prepareStatement(sql.toString());
-                sqlStatement = parseTypeData(sqlStatement, conditionFieldName);
+                sql.append(columnFieldType.getColumnName())
+                        .append(" = ?")
+                .append(" and ");
+
             }
+            sql.replace(sql.length()-5, sql.length(), "");
+            sqlStatement = conn.prepareStatement(sql.toString());
+            sqlStatement = parseTypeData(sqlStatement, conditionFieldName);
 
         }
         System.out.println(sqlStatement);

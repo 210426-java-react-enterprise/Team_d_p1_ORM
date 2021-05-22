@@ -56,9 +56,6 @@ public abstract class StatementBuilder{
                 case FLOAT:
                     statement.setFloat(i, (Float) fieldData.getDefaultValue());
                     break;
-                case DATE:
-                    statement.setDate(i, (Date) fieldData.getDefaultValue());
-                    break;
                 default:
                     dataType.javaToPostgreSQLArguments(fieldData,fieldData.getDefaultValue());
 

@@ -57,6 +57,7 @@
                         <exclude>**/com/revature/util/*</exclude>
                         <exclude>**/com/revature/util/datasource/*</exclude>
                         <exclude>**/com/revature/statements/StatementType*</exclude>
+                        <exclude>**/com/revature/configurations/*</exclude>
                     </excludes>
                 </configuration>
 
