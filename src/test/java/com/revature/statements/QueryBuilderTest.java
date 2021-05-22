@@ -68,28 +68,6 @@ public class QueryBuilderTest {
         testClass = null;
     }
 
-/** 
-* 
-* Method: buildSelectStatement(ColumnFieldType conditionFieldName) 
-* 
-*/ 
-@Test
-public void testBuildSelectStatement() throws Exception {
-    ColumnFieldType fieldData = new ColumnFieldType();
-    fieldData.setTableName("test_table");
-    fieldData.setColumnName("test_column");
-    fieldData.setDefaultValue("delete");
-    fieldData.setDataType(DataType.STRING);
-
-
-    try {
-        when(rs.next()).thenReturn(true);
-        sut.buildSelectStatement(fieldData);
-    } catch (SQLException throwables) {
-        throwables.printStackTrace();
-    }
-}
-
     @Test
     public void testUpdateStatementIntegration() throws SQLException, ImproperConfigurationException {
         ResultSet rs = sut.buildStatement(testClass,"user_id");
