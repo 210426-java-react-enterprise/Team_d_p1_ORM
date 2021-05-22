@@ -100,6 +100,7 @@ public class ColumnFieldType {
                 "tableName='" + tableName + "\n" +
                 ", columnName='" + columnName + '\n' +
                 ", dataType=" + dataType + '\n' +
+                ", dataValue="+defaultValue+'\n'+
                 ", fieldConfig=" + fieldConfig +
                 '}'+"\n\n";
     }

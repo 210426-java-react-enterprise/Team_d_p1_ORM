@@ -8,22 +8,21 @@
 
 package com.revature.statements;
 
+import com.revature.configurations.TableConfig;
+import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
 import com.revature.util.datasource.ConnectionFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeleteBuilder extends StatementBuilder{
 
     private Repo repo;
 
-    public DeleteBuilder(){
-        conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
-        type = StatementType.DELETE;
-        repo = new Repo(conn);
-    }
     public DeleteBuilder(Repo repo){
         conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
         type = StatementType.DELETE;
@@ -43,9 +42,30 @@ public class DeleteBuilder extends StatementBuilder{
         return repo.statementExecute(sqlStatement);
     }
 
+    public ResultSet buildDeleteStatementWithMultipleConditions(String tableName, ColumnFieldType... conditionFieldName) throws SQLException {
+        if(conditionFieldName.length==1) {
+            return buildDeleteStatement(conditionFieldName[0]);
+        }else {
+            StringBuilder sql = new StringBuilder().append("delete from ").append(tableName);
+            for(ColumnFieldType columnFieldType:conditionFieldName){
+                sql.append(" where ")
+                        .append(columnFieldType.getColumnName())
+                        .append(" = ?");
+                conn.prepareStatement(sql.toString());
+                sqlStatement = parseTypeData(sqlStatement, conditionFieldName);
+            }
+
+        }
+        System.out.println(sqlStatement);
+        return repo.queryExecute(sqlStatement);
+    }
+
 
     @Override
-    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) {
-        return null;
+    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws ImproperConfigurationException, SQLException {
+        TableConfig tableConfig = new TableConfig(objectToBePersisted);
+        List<ColumnFieldType> conditionalFieldTypes = new ArrayList<>();
+        processConditionStatements(tableConfig,conditionalFieldTypes,conditionalFieldNames);
+        return buildDeleteStatementWithMultipleConditions(tableConfig.getTableName(),conditionalFieldTypes.toArray(new ColumnFieldType[0]));
     }
 }

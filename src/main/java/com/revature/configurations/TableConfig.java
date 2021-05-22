@@ -10,6 +10,7 @@ package com.revature.configurations;
 import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 import com.revature.annotations.Column;
+import com.revature.exception.ImproperConfigurationException;
 import com.revature.types.ColumnFieldType;
 import com.revature.types.DataType;
 
@@ -34,6 +35,12 @@ public class TableConfig {
         this.dataClass = dataClass;
         this.tableName = extractTableName(dataClass);
         this.fieldTypes = extractFieldTypes(dataClass);
+    }
+
+    public TableConfig(Object objectToBePersisted) throws ImproperConfigurationException {
+        this.dataClass = objectToBePersisted.getClass();
+        this.tableName = extractTableName(dataClass);
+        extractData(objectToBePersisted);
     }
 
     /**
@@ -103,30 +110,61 @@ public class TableConfig {
         return name;
     }
 
-    public List<ColumnFieldType> extractFieldTypes(Class<?> clazz){
+    private List<ColumnFieldType> extractFieldTypes(Class<?> clazz){
         List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
         for(Class<?> classParse = clazz; classParse!=null; classParse = classParse.getSuperclass()){
             for(Field field: classParse.getDeclaredFields()){
-                //TODO Need to define a ColumnFieldType Properly, above logic will grab all fields associated with a class object
                Column column = field.getAnnotation(Column.class);
                 if (column == null) {
                     continue;
                 }
                 ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
-                String columnName = column.columnName();
-                fieldConfig.setColumnName((columnName.equals("") ? field.getName() : columnName));
-                fieldConfig.setNotNull(column.notNull());
-                fieldConfig.setUnique(column.unique());
-                fieldConfig.setDataType(DataType.getDataType(field.getType()));
-                fieldConfig.setFieldName(field.getName());
-                ColumnFieldType fieldInfo = new ColumnFieldType(fieldConfig);
+
+                ColumnFieldType fieldInfo = new ColumnFieldType(columnFieldConfigSetup(fieldConfig,column,field));
                 fieldInfo.setTableName(tableName);
                 fieldInfo.setField(field);
                 columnFieldTypes.add(fieldInfo);
             }
         }
-//        Field field = new TableConfig().getClass().getDeclaredFields()[0].get();
         return  columnFieldTypes;
+    }
+    private ColumnFieldConfig columnFieldConfigSetup(ColumnFieldConfig fieldConfig,Column column,Field field){
+        String columnName = column.columnName();
+        fieldConfig.setColumnName((columnName.equals("") ? field.getName() : columnName));
+        fieldConfig.setNotNull(column.notNull());
+        fieldConfig.setUnique(column.unique());
+        fieldConfig.setDataType(DataType.getDataType(field.getType()));
+        fieldConfig.setFieldName(field.getName());
+        return fieldConfig;
+    }
+
+    public void extractData(Object objectToPersist) throws ImproperConfigurationException {
+        Class<?> clazz = objectToPersist.getClass();
+        List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
+        for(Class<?> classParse = clazz; classParse!=null; classParse = classParse.getSuperclass()){
+            for(Field field: classParse.getDeclaredFields()){
+                field.setAccessible(true);
+                Column column = field.getAnnotation(Column.class);
+                if (column == null) {
+                    continue;
+                }
+                ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
+                ColumnFieldType fieldInfo = new ColumnFieldType(columnFieldConfigSetup(fieldConfig,column,field));
+                try {
+                    fieldInfo.setDefaultValue(field.get(objectToPersist));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }catch(NullPointerException e){
+                    if(column.notNull()){
+                        throw new ImproperConfigurationException("Value that is classified as not null, is infact null");
+                    }
+                }
+                fieldInfo.setTableName(tableName);
+                fieldInfo.setField(field);
+                columnFieldTypes.add(fieldInfo);
+            }
+        }
+        this.fieldTypes = columnFieldTypes;
     }
 
     @Override
