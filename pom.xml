@@ -52,6 +52,12 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <properties>
+        <sonar.projectKey>mortgert_Team_d_p1_ORM</sonar.projectKey>
+        <sonar.organization>mortgert</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
+
     <dependencies>
         <!-- JDBC Driver -->
         <dependency>
