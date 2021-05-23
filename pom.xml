@@ -4,15 +4,57 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.revature</groupId>
+    <groupId>com.revature.dontbreakplz</groupId>
     <artifactId>ORM</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description> A homemade ORM to be used as a dependency for servlet based web application. Not efficient whatsoever but will have improvements</description>
+    <url>https://github.com/mortgert/Team_d_p1_ORM/tree/dev_branch</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Nicholas Recino</name>
+            <email>nicholasrecino@revature.net</email>
+            <organization>Revature</organization>
+            <organizationUrl>http://www.revature.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Everett Diuguid </name>
+            <email>everett.diuguid@gmail.com</email>
+            <organization>Revature</organization>
+            <organizationUrl>http://www.revature.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Ann Louis-Charles</name>
+            <email>annaaishalouischarles@gmail.com</email>
+            <organization>Revature</organization>
+            <organizationUrl>http://www.revature.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/210426-java-react-enterprise/Team_d_p1_ORM.git</connection>
+        <developerConnection>scm:git:ssh://github.com:210426-java-react-enterprise/Team_d_p1_ORM.git</developerConnection>
+        <url>http://github.com/210426-java-react-enterprise/Team_d_p1_ORM/tree/dev_branch</url>
+    </scm>
 
 <!-- Source Java Compiler-->
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <sonar.projectKey>mortgert_Team_d_p1_ORM</sonar.projectKey>
+        <sonar.organization>mortgert</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
+
     <dependencies>
         <!-- JDBC Driver -->
         <dependency>
@@ -93,7 +135,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.50</minimum>
+                                            <minimum>0.80</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
