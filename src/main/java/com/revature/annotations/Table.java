@@ -25,6 +25,9 @@ package com.revature.annotations;
 
 import java.lang.annotation.*;
 
+/**
+ * @param name Name of the specified table in a database that the annotated class is mapped to
+ */
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
