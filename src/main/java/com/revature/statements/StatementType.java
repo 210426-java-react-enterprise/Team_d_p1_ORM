@@ -93,7 +93,7 @@ public enum StatementType {
             }
 
         }
-
+//      (objectPassthrough, "username", "password")
         @Override
         public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam) throws ImproperConfigurationException {
             try{
