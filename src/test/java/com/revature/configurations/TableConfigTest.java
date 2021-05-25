@@ -17,7 +17,7 @@ public class TableConfigTest {
     public TableConfig sut;
     public TestClass testClass;
 
-
+// Test Class
 protected static class TestClass{
     @Column(columnName = "Test Column 1",notNull = true)
     private int testInt = 18;
