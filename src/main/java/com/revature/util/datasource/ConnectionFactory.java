@@ -62,7 +62,7 @@ public class ConnectionFactory {
     // Entry point into setting the connection for the Database for the ORM from the WebApp, setup this way because if there is time, easy to change to allow for
     // multiple connections based on a preface call
     public static void setConnection(String hostURL, String username, String password,String schemaName){
-        String processedHostURL = "jdbc:postgresql://"+hostURL+"/postgres?schemaname:"+schemaName;
+        String processedHostURL = "jdbc:postgresql://"+hostURL+"/postgres?currentSchema="+schemaName;
         props.put("host-url",processedHostURL);
         props.put("username", username);
         props.put("password",password);
