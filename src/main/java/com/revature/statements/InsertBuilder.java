@@ -42,7 +42,7 @@ public class InsertBuilder extends StatementBuilder{
         sqlStatement = conn.prepareStatement(sql.toString() + values);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
         System.out.println(sqlStatement);
-        return repo.queryExecute(sqlStatement);
+        return repo.statementExecute(sqlStatement);
     }
 
     @Override

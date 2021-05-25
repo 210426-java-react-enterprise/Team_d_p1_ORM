@@ -27,7 +27,7 @@ public class QueryBuilder extends StatementBuilder{
     public QueryBuilder(Repo repo){
         conn = ConnectionFactory.getInstance().getConnection();
         type = StatementType.SELECT;
-        this.repo = new Repo(conn);
+        this.repo = repo;
     }
 
     public ResultSet buildSelectStatement(ColumnFieldType conditionFieldName) throws SQLException {
