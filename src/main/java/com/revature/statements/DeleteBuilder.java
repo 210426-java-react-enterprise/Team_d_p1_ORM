@@ -55,7 +55,7 @@ public class DeleteBuilder extends StatementBuilder{
                 sqlStatement = parseTypeData(sqlStatement, conditionFieldName);
         }
         System.out.println(sqlStatement);
-        return repo.queryExecute(sqlStatement);
+        return repo.statementExecute(sqlStatement);
     }
 
     @Override
