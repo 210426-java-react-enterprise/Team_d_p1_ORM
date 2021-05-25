@@ -43,9 +43,6 @@ public class InsertBuilderTest {
 
     public TestClass testClass;
 
-
-
-
     @InjectMocks
     InsertBuilder sut;
 
@@ -58,7 +55,7 @@ public class InsertBuilderTest {
     @Before
     public void before() throws Exception {
         testClass = new TestClass();
-        ConnectionFactory.setConnection("bankoffsm.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","public");
+        ConnectionFactory.setConnection("task-force.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","test");
         openMocks(this);
     }
 
@@ -98,8 +95,8 @@ public void testBuildInsertStatement() {
 
     try {
         when(rs.next()).thenReturn(true);
-
         when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         sut.buildInsertStatement(fieldsData,tableName);
     } catch (SQLException throwables) {
         throwables.printStackTrace();
@@ -108,6 +105,9 @@ public void testBuildInsertStatement() {
 
     @Test
     public void testBuildStatementIntegration() throws SQLException, ImproperConfigurationException {
+        when(rs.next()).thenReturn(true);
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         sut.buildStatement(testClass);
     }
 

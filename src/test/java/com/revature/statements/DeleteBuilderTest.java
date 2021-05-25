@@ -12,6 +12,7 @@ import org.junit.After;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -51,10 +52,12 @@ public class DeleteBuilderTest {
     @Mock
     ResultSet rs;
 
+
+
     @Before
     public void before() throws Exception {
         testClass = new TestClass();
-        ConnectionFactory.setConnection("bankoffsm.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","public");
+        ConnectionFactory.setConnection("task-force.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","test");
         openMocks(this);
     }
 
@@ -82,8 +85,8 @@ public void testBuildDeleteStatement(){
 
     try {
         when(rs.next()).thenReturn(true);
-
         when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         sut.buildDeleteStatement(fieldData);
     } catch (SQLException throwables) {
         throwables.printStackTrace();
@@ -91,10 +94,16 @@ public void testBuildDeleteStatement(){
 }
     @Test
     public void testDeleteStatementIntegration() throws SQLException, ImproperConfigurationException {
+        when(rs.next()).thenReturn(true);
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         sut.buildStatement(testClass,"testbool");
     }
     @Test
     public void testDeleteStatementIntegrationWithMultipleFields() throws SQLException, ImproperConfigurationException {
+        when(rs.next()).thenReturn(true);
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         sut.buildStatement(testClass,"testbool","testdouble","testfloat");
     }
 

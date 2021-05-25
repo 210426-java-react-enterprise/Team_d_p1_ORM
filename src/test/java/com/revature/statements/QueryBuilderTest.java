@@ -44,18 +44,20 @@ public class QueryBuilderTest {
 
     public TestClass testClass;
 
+    @InjectMocks
     QueryBuilder sut;
 
-    Repo properRepo;
+    @Mock
+    Repo mockRepo;
 
     @Mock
     ResultSet rs;
 
     @Before
     public void before() throws Exception {
-        ConnectionFactory.setConnection("bankoffsm.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","public");
-        properRepo = new Repo(ConnectionFactory.getInstance().getConnection());
-        sut = new QueryBuilder(properRepo);
+        ConnectionFactory.setConnection("task-force.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","test");
+        mockRepo = new Repo(ConnectionFactory.getInstance().getConnection());
+        sut = new QueryBuilder(mockRepo);
         testClass = new TestClass();
 
         ORMState state = ORMState.getInstance();
@@ -70,12 +72,18 @@ public class QueryBuilderTest {
 
     @Test
     public void testUpdateStatementIntegration() throws SQLException, ImproperConfigurationException {
+        when(rs.next()).thenReturn(true);
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         ResultSet rs = sut.buildStatement(testClass,"user_id");
         rs.next();
         System.out.println(rs.getString("username"));
     }
     @Test
     public void testUpdateStatementIntegrationWithMultipleFields() throws SQLException, ImproperConfigurationException {
+        when(rs.next()).thenReturn(true);
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         sut.buildStatement(testClass,"password","username");
     }
 
