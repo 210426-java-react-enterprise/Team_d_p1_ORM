@@ -20,7 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExtractionService {
-
+    /**
+     *
+     * @param objectToPersist
+     * @param tableName
+     * @return
+     * @throws ImproperConfigurationException
+     */
     public static List<ColumnFieldType> extractData(Object objectToPersist,String tableName) throws ImproperConfigurationException {
         Class<?> clazz = objectToPersist.getClass();
         List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
@@ -50,6 +56,13 @@ public class ExtractionService {
         return columnFieldTypes;
     }
 
+    /**
+     *
+     * @param fieldConfig
+     * @param column
+     * @param field
+     * @return
+     */
     private static ColumnFieldConfig columnFieldConfigSetup(ColumnFieldConfig fieldConfig, Column column, Field field){
         String columnName = column.columnName();
         fieldConfig.setColumnName((columnName.equals("") ? field.getName().toLowerCase() : columnName));
@@ -60,10 +73,12 @@ public class ExtractionService {
         return fieldConfig;
     }
 
-    // TODO might need to put these features in their own behaviour/service layer unless configs count as that
+
     /**
      * Extracts and return the table name for a class seeing first if the name specified in the annotation is present and if not,
      * then simply making the class name lowercase the table name.
+     * @param clazz Class name to extract string from
+     * @return returns a table name from a class object that has been annotated
      */
     public static  String extractTableName(Class<?> clazz) {
         Table table = clazz.getAnnotation(Table.class);
