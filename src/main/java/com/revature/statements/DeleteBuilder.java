@@ -21,27 +21,43 @@ import java.util.List;
 
 public class DeleteBuilder extends StatementBuilder{
 
-    private Repo repo;
+    private final Repo repo;
 
+    /**
+     *  Creates a SQL script builder that creates a DELETE oriented sql statement
+     * @param repo Object that actually makes the call to execute the sql statement through JDBC
+     */
     public DeleteBuilder(Repo repo){
         conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
         type = StatementType.DELETE;
         this.repo = repo;
     }
 
+    /**
+     *  Build a delete statement with one conditional field
+     * @param deleteConditionFieldName The ColumnFieldType which represents the column that is utilized as a condition for what rows to delete
+     * @return a ResultSet if any keys are generated from this execution, may be null
+     * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
+     */
     public ResultSet buildDeleteStatement(ColumnFieldType deleteConditionFieldName) throws SQLException {
-        StringBuilder sql = new StringBuilder();
-        sql.append("delete from ")
-            .append(deleteConditionFieldName.getTableName())
-            .append(" where ")
-            .append(deleteConditionFieldName.getColumnName())
-            .append(" = ?");
-        sqlStatement = conn.prepareStatement(sql.toString());
+        String sql = "delete from " +
+                deleteConditionFieldName.getTableName() +
+                " where " +
+                deleteConditionFieldName.getColumnName() +
+                " = ?";
+        sqlStatement = conn.prepareStatement(sql);
         sqlStatement = parseTypeData(sqlStatement,new ColumnFieldType[]{deleteConditionFieldName});
         System.out.println(sqlStatement);
         return repo.statementExecute(sqlStatement);
     }
 
+    /**
+     * Build a delete statement with one or more  conditional fields using the string representation of the column name
+     * @param tableName name of the table that is being acted upon
+     * @param conditionFieldName The ColumnFieldType(s) which represents the column(s) that is/are utilized as a condition for what rows to delete
+     * @return a ResultSet if any keys are generated from this execution, may be null
+     * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
+     */
     public ResultSet buildDeleteStatementWithMultipleConditions(String tableName, ColumnFieldType... conditionFieldName) throws SQLException {
         if(conditionFieldName.length==1) {
             return buildDeleteStatement(conditionFieldName[0]);
@@ -58,6 +74,16 @@ public class DeleteBuilder extends StatementBuilder{
         return repo.statementExecute(sqlStatement);
     }
 
+    /**
+     *  Builds  Statement and then executes the statement in accordance to which portion of CRUD is desired over-ridden from StatementBuilder
+     *  to allow polymorphic calls in StatementType enum
+     * @param objectToBePersisted Object to extract data and ColumnFieldTypes from
+     * @param conditionalFieldNames The column names which represents the column(s) that is/are utilized as a condition for what rows to delete,
+     *                              used to generate the ColumnFieldType(s) to pass through  the CRUD specific builder
+     * @return a ResultSet if any keys are generated from this execution, may be null
+     * @throws ImproperConfigurationException If there is no data present in a field while NotNull condition is present
+     * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
+     */
     @Override
     protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws ImproperConfigurationException, SQLException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted);

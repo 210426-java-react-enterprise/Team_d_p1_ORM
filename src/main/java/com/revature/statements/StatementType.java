@@ -14,6 +14,9 @@ import com.revature.util.ORMState;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * The enum Statement type.
+ */
 public enum StatementType {
 
     /**
@@ -107,6 +110,9 @@ public enum StatementType {
 
         }
     },
+    /**
+     * PostgreSQL statement in the form of UPDATE ... FROM table
+     */
     UPDATE{
 
         @Override
@@ -152,9 +158,27 @@ public enum StatementType {
     };
 
 
+    /**
+     * Executes a statement built around the mapping of a specific object
+     *
+     * @param <T>             the type parameter of the object to be persisted
+     * @param objectToPersist the object to persist
+     * @return the result set generated from the execution of a Postgresql statement
+     * @throws ImproperConfigurationException when the shape of the table and constraints do not match the object passed through
+     */
     public <T> ResultSet createStatement(T objectToPersist) throws ImproperConfigurationException {
         return null;
     }
+
+    /**
+     * Executes a statement built around the mapping of a specific object with specific conditions
+     *
+     * @param <T>             the type parameter of the object to be persisted
+     * @param objectToPersist the object to persist
+     * @param conditionalParam the string names of the conditional parameters that alter the statement creation process
+     * @return the result set generated from the execution of a Postgresql statement
+     * @throws ImproperConfigurationException when the shape of the table and constraints do not match the object passed through
+     */
     public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam) throws ImproperConfigurationException {
         return null;
     }

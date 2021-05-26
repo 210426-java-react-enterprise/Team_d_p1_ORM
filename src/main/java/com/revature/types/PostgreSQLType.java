@@ -25,17 +25,48 @@ package com.revature.types;
 
 /**
  * Enumerator for all the Postgres data-types that will be allowed to be utilized within the ORM
+ *
  * @author Nicholas Recino
  */
 public enum PostgreSQLType {
+    /**
+     * Boolean postgre sql type.
+     */
     BOOLEAN,
+    /**
+     * Char postgre sql type.
+     */
     CHAR,
+    /**
+     * Varchar postgre sql type.
+     */
     VARCHAR,
+    /**
+     * Float 8 postgre sql type.
+     */
     FLOAT8,
+    /**
+     * Int 4 postgre sql type.
+     */
     INT4,
+    /**
+     * Int 8 postgre sql type.
+     */
     INT8,
+    /**
+     * Json postgre sql type.
+     */
     JSON,
+    /**
+     * Decimal postgre sql type.
+     */
     DECIMAL,
+    /**
+     * Timestamp postgre sql type.
+     */
     TIMESTAMP,
+    /**
+     * Serial 4 postgre sql type.
+     */
     SERIAL4
 }

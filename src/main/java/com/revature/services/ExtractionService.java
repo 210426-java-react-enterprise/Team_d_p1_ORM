@@ -21,11 +21,11 @@ import java.util.List;
 
 public class ExtractionService {
     /**
-     *
-     * @param objectToPersist
-     * @param tableName
-     * @return
-     * @throws ImproperConfigurationException
+     * Extracts the data from an object and transforms it into a List of ColumnFieldType that represent fields within a table the object is modeled after
+     * @param objectToPersist Object to extract data from
+     * @param tableName Name of the database table this object will be stored in, can be same table as another, but allows pass through of the name of another table if normalization is beyond 3rd normal form
+     * @return a List of ColumnFieldType that represent the fields within a table on the data base
+     * @throws ImproperConfigurationException if there is no data present in a field while NotNull condition is present
      */
     public static List<ColumnFieldType> extractData(Object objectToPersist,String tableName) throws ImproperConfigurationException {
         Class<?> clazz = objectToPersist.getClass();
@@ -57,11 +57,11 @@ public class ExtractionService {
     }
 
     /**
-     *
-     * @param fieldConfig
-     * @param column
-     * @param field
-     * @return
+     *  Parses and processes a fieldConfig to be used with a ColumnFieldType
+     * @param fieldConfig representation of the behavior of a field within a column in a database
+     * @param column annotation holding information that is used to set the behavior of a fieldConfig
+     * @param field the field of an object that is represented by a column in database
+     * @return the configuration object of a ColumnFieldType that is represented as a column in a database table
      */
     private static ColumnFieldConfig columnFieldConfigSetup(ColumnFieldConfig fieldConfig, Column column, Field field){
         String columnName = column.columnName();

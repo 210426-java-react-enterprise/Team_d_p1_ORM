@@ -16,18 +16,34 @@ import com.revature.util.datasource.ConnectionFactory;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The type Update builder.
+ */
 public class UpdateBuilder extends StatementBuilder{
 
     private Repo repo;
 
+    /**
+     * Instantiates a new Update builder.
+     *
+     * @param repo the repo used to execute the statements
+     */
     public UpdateBuilder(Repo repo){
         conn = ConnectionFactory.getInstance().getConnection();
         type = StatementType.UPDATE;
         this.repo = repo;
     }
+
+    /**
+     * Builds an update statement with a singular conditional field
+     *
+     * @param fieldsData                the fields data that is to be updated
+     * @param updateConditionFieldNames the update condition  ColumnFieldType that hold information about the field that is a condition
+     * @return the result set of any generated keys from the execution of the statement
+     * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
+     */
     public ResultSet buildUpdateStatement(ColumnFieldType[] fieldsData,ColumnFieldType updateConditionFieldNames) throws SQLException {
         StringBuilder sql = new StringBuilder().append("update ").append(updateConditionFieldNames.getTableName()).append(" set ");
         for(ColumnFieldType fieldName:fieldsData){
@@ -42,6 +58,16 @@ public class UpdateBuilder extends StatementBuilder{
 
         return repo.statementExecute(sqlStatement);
     }
+
+    /**
+     * Build update statement with multiple conditions result set.
+     *
+     * @param tableName                 the table name of the table that is intended to be updated
+     * @param fieldsData                the fields data that is to be updated
+     * @param updateConditionFieldNames the update conditional  ColumnFieldType(s) that hold information about the field that is the condition(s)
+     * @return the result set of any generated keys from the execution of the statement
+     * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
+     */
     public ResultSet buildUpdateStatementWithMultipleConditions(String tableName,ColumnFieldType[] fieldsData,ColumnFieldType... updateConditionFieldNames) throws SQLException {
         StringBuilder sql = new StringBuilder().append("update ").append(tableName).append(" set ");
         if(updateConditionFieldNames.length==1){
