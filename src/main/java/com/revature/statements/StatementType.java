@@ -26,27 +26,13 @@ public enum StatementType {
 
         @Override
         public <T> ResultSet createStatement(T objectToPersist) throws ImproperConfigurationException {
-            try{
-                StatementBuilder insertStatementBuilder = ORMState.getStatementBuilder("insert");
-                return insertStatementBuilder.buildStatement(objectToPersist);
-            }catch (SQLException e){
-                e.printStackTrace();
-                throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
-            }
+            return getStatementBuilderFromORM(objectToPersist, "insert");
         }
 
         @Override
         public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam) throws ImproperConfigurationException {
-            try{
-                StatementBuilder insertStatementBuilder = ORMState.getStatementBuilder("insert");
-                return insertStatementBuilder.buildStatement(objectToPersist,conditionalParam);
-            }catch (SQLException e){
-                e.printStackTrace();
-                throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
-            }
-
+            return getStatementBuilderFromORMWithCondition(objectToPersist, conditionalParam, "insert");
         }
-        //TODO change to InsertBuilder Not implemented in dev branch yet
     },
     /**
      * PostgreSQL statement in the form of SELECT ... FROM table ...
@@ -55,28 +41,11 @@ public enum StatementType {
 
         @Override
         public <T> ResultSet createStatement(T objectToPersist) throws ImproperConfigurationException {
-            try{
-                StatementBuilder insertQueryBuilder = ORMState.getStatementBuilder("query");
-                return insertQueryBuilder.buildStatement(objectToPersist);
-
-            }catch (SQLException e){
-                e.printStackTrace();
-                throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
-            }
-
+            return getStatementBuilderFromORM(objectToPersist, "query");
         }
-
         @Override
         public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam) throws ImproperConfigurationException {
-            try{
-                StatementBuilder insertQueryBuilder = ORMState.getStatementBuilder("query");
-                return insertQueryBuilder.buildStatement(objectToPersist,conditionalParam);
-
-            }catch (SQLException e){
-                e.printStackTrace();
-                throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
-            }
-
+            return getStatementBuilderFromORMWithCondition(objectToPersist, conditionalParam, "query");
         }
     },
     /**
@@ -86,28 +55,12 @@ public enum StatementType {
 
         @Override
         public <T> ResultSet createStatement(T objectToPersist) throws ImproperConfigurationException {
-            try{
-                StatementBuilder insertDeleteBuilder = ORMState.getStatementBuilder("delete");
-                return insertDeleteBuilder.buildStatement(objectToPersist);
-
-            }catch (SQLException e){
-                e.printStackTrace();
-                throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
-            }
-
+            return getStatementBuilderFromORM(objectToPersist, "delete");
         }
 //      (objectPassthrough, "username", "password")
         @Override
         public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam) throws ImproperConfigurationException {
-            try{
-                StatementBuilder insertDeleteBuilder = ORMState.getStatementBuilder("delete");
-                return insertDeleteBuilder.buildStatement(objectToPersist,conditionalParam);
-
-            }catch (SQLException e){
-                e.printStackTrace();
-                throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
-            }
-
+            return getStatementBuilderFromORMWithCondition(objectToPersist, conditionalParam, "delete");
         }
     },
     /**
@@ -117,28 +70,12 @@ public enum StatementType {
 
         @Override
         public <T> ResultSet createStatement(T objectToPersist) throws ImproperConfigurationException {
-            try{
-                StatementBuilder insertUpdateBuilder = ORMState.getStatementBuilder("update");
-                return insertUpdateBuilder.buildStatement(objectToPersist);
-
-            }catch (SQLException e){
-                e.printStackTrace();
-                throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
-            }
-
+            return getStatementBuilderFromORM(objectToPersist, "update");
         }
 
         @Override
         public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam) throws ImproperConfigurationException {
-            try{
-                StatementBuilder insertUpdateBuilder = ORMState.getStatementBuilder("update");
-                return insertUpdateBuilder.buildStatement(objectToPersist,conditionalParam);
-
-            }catch (SQLException e){
-                e.printStackTrace();
-                throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
-            }
-
+            return getStatementBuilderFromORMWithCondition(objectToPersist, conditionalParam, "update");
         }
     },
     /**
@@ -156,6 +93,22 @@ public enum StatementType {
             return null;
         }
     };
+
+    private static ResultSet getStatementBuilderFromORMWithCondition(Object objectToPersist, String[] conditionalParam, String builderName) throws ImproperConfigurationException {
+        try {
+            return ORMState.getStatementBuilder(builderName).buildStatement(objectToPersist, conditionalParam);
+        } catch (SQLException e) {
+            throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
+        }
+    }
+
+    private static ResultSet getStatementBuilderFromORM(Object objectToPersist, String builderName) throws ImproperConfigurationException {
+        try {
+            return ORMState.getStatementBuilder(builderName).buildStatement(objectToPersist);
+        } catch (SQLException e) {
+            throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");
+        }
+    }
 
 
     /**
@@ -182,7 +135,5 @@ public enum StatementType {
     public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam) throws ImproperConfigurationException {
         return null;
     }
-
-
 
 }
