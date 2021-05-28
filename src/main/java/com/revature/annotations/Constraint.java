@@ -14,6 +14,10 @@ import java.lang.annotation.*;
  * Holds the values for constraints on a field that arent specific to being nullable, unique
  * i.e. minimum or maximum lengths  , minimum or maximum values, and others as needed, when
  * -1 there is no minimum or maximum.
+ * @param minimumValue
+ * @param minimumLength
+ * @param maximumValue
+ * @param maximumLength
  */
 @Target(ElementType.FIELD)
 @Documented

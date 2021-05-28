@@ -18,6 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  TODO: 5/26/2021
+ *  This class is not utilized at the moment, may be in future meant to represent an entire database to allow use of views as well
+ * @param <T>
+ */
 public class DatabaseTable<T> {
 
     private final Repo repo;

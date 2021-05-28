@@ -8,18 +8,24 @@
 
 package com.revature.repos;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Repo {
-    Connection conn;
 
-    public Repo(Connection conn){
-        this.conn = conn;
+    /**
+     *  No Arg Constructor for Repo
+     */
+    public Repo(){
+
     }
 
+    /**
+     *
+     * @param statement Statement to be executed
+     * @return a ResultSet object modeling the keys generated from the execution
+     */
     public ResultSet statementExecute(PreparedStatement statement) {
         ResultSet rs = null;
         try {
@@ -33,7 +39,11 @@ public class Repo {
         return rs;
     }
 
-
+    /**
+     *
+     * @param statement Statement to be executed
+     * @return a ResultSet object modeling the information returned from executing the query
+     */
     public ResultSet queryExecute(PreparedStatement statement){
         ResultSet rs = null;
         try{
@@ -43,9 +53,4 @@ public class Repo {
         }
         return rs;
     }
-
-    public Connection getRepoConnection(){
-        return conn;
-    }
-
 }

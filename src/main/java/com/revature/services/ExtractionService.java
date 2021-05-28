@@ -9,6 +9,7 @@
 package com.revature.services;
 
 import com.revature.annotations.Column;
+import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 import com.revature.configurations.ColumnFieldConfig;
 import com.revature.exception.ImproperConfigurationException;
@@ -20,7 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExtractionService {
-
+    /**
+     * Extracts the data from an object and transforms it into a List of ColumnFieldType that represent fields within a table the object is modeled after
+     * @param objectToPersist Object to extract data from
+     * @param tableName Name of the database table this object will be stored in, can be same table as another, but allows pass through of the name of another table if normalization is beyond 3rd normal form
+     * @return a List of ColumnFieldType that represent the fields within a table on the data base
+     * @throws ImproperConfigurationException if there is no data present in a field while NotNull condition is present
+     */
     public static List<ColumnFieldType> extractData(Object objectToPersist,String tableName) throws ImproperConfigurationException {
         Class<?> clazz = objectToPersist.getClass();
         List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
@@ -50,6 +57,13 @@ public class ExtractionService {
         return columnFieldTypes;
     }
 
+    /**
+     *  Parses and processes a fieldConfig to be used with a ColumnFieldType
+     * @param fieldConfig representation of the behavior of a field within a column in a database
+     * @param column annotation holding information that is used to set the behavior of a fieldConfig
+     * @param field the field of an object that is represented by a column in database
+     * @return the configuration object of a ColumnFieldType that is represented as a column in a database table
+     */
     private static ColumnFieldConfig columnFieldConfigSetup(ColumnFieldConfig fieldConfig, Column column, Field field){
         String columnName = column.columnName();
         fieldConfig.setColumnName((columnName.equals("") ? field.getName().toLowerCase() : columnName));
@@ -60,10 +74,12 @@ public class ExtractionService {
         return fieldConfig;
     }
 
-    // TODO might need to put these features in their own behaviour/service layer unless configs count as that
+
     /**
      * Extracts and return the table name for a class seeing first if the name specified in the annotation is present and if not,
      * then simply making the class name lowercase the table name.
+     * @param clazz Class name to extract string from
+     * @return returns a table name from a class object that has been annotated
      */
     public static  String extractTableName(Class<?> clazz) {
         Table table = clazz.getAnnotation(Table.class);
@@ -74,5 +90,27 @@ public class ExtractionService {
             name = clazz.getSimpleName().toLowerCase();
         }
         return name;
+    }
+
+    public static List<String> extractAllFieldNames(Class<?> dataClass) {
+        List<String> columnFieldNames = new ArrayList<>();
+        String fieldName = "";
+        for(Class<?> classParse = dataClass; classParse!=null; classParse = classParse.getSuperclass()){
+            for(Field field: classParse.getDeclaredFields()){
+                field.setAccessible(true);
+                Column column = field.getAnnotation(Column.class);
+                PrimaryKey pk = field.getAnnotation(PrimaryKey.class);
+                if (column != null) {
+                    fieldName = column.columnName();
+
+                }
+                if(pk!=null){
+                    fieldName = pk.name();
+                }
+                fieldName = (fieldName.equals("") ? field.getName().toLowerCase() : fieldName);
+                columnFieldNames.add(fieldName);
+            }
+        }
+        return columnFieldNames;
     }
 }

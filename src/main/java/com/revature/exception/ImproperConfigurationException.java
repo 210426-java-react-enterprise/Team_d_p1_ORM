@@ -10,6 +10,10 @@ package com.revature.exception;
 
 public class ImproperConfigurationException extends  Exception{
 
+    /**
+     *  Thrown when the expected configuration of an object does not meet what an object that is passed through to be modeled after
+     * @param message to pass-through to the method handling this exception
+     */
     public ImproperConfigurationException(String message){
         super(message);
     }

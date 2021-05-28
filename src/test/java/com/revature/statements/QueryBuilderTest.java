@@ -5,9 +5,6 @@ import com.revature.annotations.Entity;
 import com.revature.annotations.Table;
 import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
-import com.revature.types.ColumnFieldType;
-import com.revature.types.DataType;
-import com.revature.util.ORMState;
 import com.revature.util.datasource.ConnectionFactory;
 import org.junit.Test;
 import org.junit.Before; 
@@ -17,7 +14,6 @@ import org.mockito.Mock;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -31,6 +27,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 * @version 1.0 
 */ 
 public class QueryBuilderTest {
+
     @Table(name = "users")
     @Entity
     protected static class TestClass{
@@ -42,7 +39,7 @@ public class QueryBuilderTest {
         public String password = "password!";
     }
 
-    public TestClass testClass;
+    TestClass testClass;
 
     @InjectMocks
     QueryBuilder sut;
@@ -56,18 +53,16 @@ public class QueryBuilderTest {
     @Before
     public void before() throws Exception {
         ConnectionFactory.setConnection("task-force.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","test");
-        mockRepo = new Repo(ConnectionFactory.getInstance().getConnection());
-        sut = new QueryBuilder(mockRepo);
         testClass = new TestClass();
-
-        ORMState state = ORMState.getInstance();
+        openMocks(this);
     }
 
     @After
-    public void after() throws Exception {
+    public void after(){
         sut = null;
         rs = null;
         testClass = null;
+        mockRepo = null;
     }
 
     @Test

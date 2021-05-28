@@ -10,6 +10,11 @@ package com.revature.annotations;
 
 import java.lang.annotation.*;
 
+/**
+ * columnName is the name of specified column corresponding in the database
+ * notNull specifies whether the specified value is allowed to be null or not
+ * unique specifies whether the specified value is unique in the database
+ */
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
