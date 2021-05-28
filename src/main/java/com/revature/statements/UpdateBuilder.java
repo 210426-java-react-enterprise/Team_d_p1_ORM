@@ -56,7 +56,7 @@ public class UpdateBuilder extends StatementBuilder{
         sqlStatement = conn.prepareStatement(sql.toString(),keysToReturn);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
 
-        return repo.statementExecute(sqlStatement);
+        return repo.queryExecute(sqlStatement);
     }
 
     /**
@@ -88,7 +88,7 @@ public class UpdateBuilder extends StatementBuilder{
         sql.replace(sql.length()-5,sql.length(),"");
         sqlStatement = conn.prepareStatement(sql.toString(),keysToReturn);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
-        return repo.statementExecute(sqlStatement);
+        return repo.queryExecute(sqlStatement);
     }
 
     @Override
