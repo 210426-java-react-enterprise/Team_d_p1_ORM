@@ -16,6 +16,7 @@ import com.revature.util.datasource.ConnectionFactory;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -69,6 +70,7 @@ public class UpdateBuilder extends StatementBuilder{
      * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
      */
     public ResultSet buildUpdateStatementWithMultipleConditions(String tableName,ColumnFieldType[] fieldsData,ColumnFieldType... updateConditionFieldNames) throws SQLException {
+        System.out.println("fields data: " + Arrays.toString(fieldsData));
         StringBuilder sql = new StringBuilder().append("update ").append(tableName).append(" set ");
         if(updateConditionFieldNames.length==1){
             return buildUpdateStatement(fieldsData,updateConditionFieldNames[0]);
