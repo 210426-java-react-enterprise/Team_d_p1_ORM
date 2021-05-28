@@ -53,7 +53,7 @@ public class UpdateBuilder extends StatementBuilder{
                 .append(" = ")
                 .append(updateConditionFieldNames.getDefaultValue().toString());
         System.out.println(sql);
-        sqlStatement = conn.prepareStatement(sql.toString());
+        sqlStatement = conn.prepareStatement(sql.toString(),keysToReturn);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
 
         return repo.statementExecute(sqlStatement);
@@ -76,13 +76,17 @@ public class UpdateBuilder extends StatementBuilder{
         for(ColumnFieldType fieldName:fieldsData){
             sql.append(fieldName.getColumnName()).append(" = ?, ");
         }
-        sql.replace(sql.length()-1,sql.length()," where ");
+        sql.replace(sql.length()-1,sql.length(),"");
+
+        sql.append(" where ");
         for(ColumnFieldType fieldType:updateConditionFieldNames){
             sql.append(fieldType.getColumnName())
                     .append(" = ")
-                    .append(fieldType.getDefaultValue().toString());
+                    .append(fieldType.getDefaultValue().toString())
+                    .append(" and ");
         }
-        sqlStatement = conn.prepareStatement(sql.toString());
+        sql.replace(sql.length()-5,sql.length(),"");
+        sqlStatement = conn.prepareStatement(sql.toString(),keysToReturn);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
         return repo.statementExecute(sqlStatement);
     }
@@ -91,6 +95,7 @@ public class UpdateBuilder extends StatementBuilder{
     protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted);
         List<ColumnFieldType> conditionalFieldTypes = new ArrayList<>();
+        keysToReturn = tableConfig.getAllFieldNames().toArray(new String[0]);
         processConditionStatements(tableConfig,conditionalFieldTypes,conditionalFieldNames);
         return buildUpdateStatementWithMultipleConditions(tableConfig.getTableName(), tableConfig.getFieldTypes().toArray(new ColumnFieldType[0]),conditionalFieldTypes.toArray(new ColumnFieldType[0]));
     }

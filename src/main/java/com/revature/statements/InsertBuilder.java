@@ -23,6 +23,7 @@ import java.sql.SQLException;
 public class InsertBuilder extends StatementBuilder{
 
     private final Repo repo;
+    private String [] keysToReturn;
 
     /**
      * Instantiates a new Insert builder.
@@ -33,6 +34,7 @@ public class InsertBuilder extends StatementBuilder{
         conn = ConnectionFactory.getInstance().getConnection();
         type = StatementType.INSERT;
         this.repo = repo;
+        keysToReturn = new String[0];
     }
 
     /**
@@ -53,7 +55,7 @@ public class InsertBuilder extends StatementBuilder{
         }
         sql.replace(sql.length()-1,sql.length(),")");
         values.replace(values.length()-1,values.length(),")");
-        sqlStatement = conn.prepareStatement(sql.toString() + values);
+        sqlStatement = conn.prepareStatement(sql.toString() + values,keysToReturn);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
         System.out.println(sqlStatement);
         return repo.statementExecute(sqlStatement);
@@ -72,6 +74,7 @@ public class InsertBuilder extends StatementBuilder{
     @Override
     protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted);
+        keysToReturn = tableConfig.getAllFieldNames().toArray(new String[0]);
         return buildInsertStatement(tableConfig.getFieldTypes().toArray(new ColumnFieldType[0]), tableConfig.getTableName());
     }
 }

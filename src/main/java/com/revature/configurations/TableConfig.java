@@ -7,18 +7,10 @@
  */
 package com.revature.configurations;
 
-import com.revature.annotations.PrimaryKey;
-import com.revature.annotations.Table;
-import com.revature.annotations.Column;
 import com.revature.exception.ImproperConfigurationException;
 import com.revature.services.ExtractionService;
 import com.revature.types.ColumnFieldType;
-import com.revature.types.DataType;
 
-import java.lang.reflect.Field;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TableConfig {
@@ -88,6 +80,14 @@ public class TableConfig {
      */
     public List<ColumnFieldType> getFieldTypes() {
         return fieldTypes;
+    }
+
+    /**
+     *
+     * @return a list of field types that represent the state of the columns in the table
+     */
+    public List<String> getAllFieldNames() {
+        return ExtractionService.extractAllFieldNames(dataClass);
     }
 
     /**

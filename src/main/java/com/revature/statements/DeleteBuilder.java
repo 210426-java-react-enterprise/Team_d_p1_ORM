@@ -23,6 +23,7 @@ public class DeleteBuilder extends StatementBuilder{
 
     private final Repo repo;
 
+
     /**
      *  Creates a SQL script builder that creates a DELETE oriented sql statement
      * @param repo Object that actually makes the call to execute the sql statement through JDBC
@@ -31,6 +32,7 @@ public class DeleteBuilder extends StatementBuilder{
         conn = ConnectionFactory.getInstance().getConnection(); // TODO This has a more dependency style intention with another branch, refactor when merged
         type = StatementType.DELETE;
         this.repo = repo;
+        keysToReturn = new String[1];
     }
 
     /**
@@ -45,7 +47,7 @@ public class DeleteBuilder extends StatementBuilder{
                 " where " +
                 deleteConditionFieldName.getColumnName() +
                 " = ?";
-        sqlStatement = conn.prepareStatement(sql);
+        sqlStatement = conn.prepareStatement(sql,keysToReturn);
         sqlStatement = parseTypeData(sqlStatement,new ColumnFieldType[]{deleteConditionFieldName});
         System.out.println(sqlStatement);
         return repo.statementExecute(sqlStatement);
@@ -54,25 +56,22 @@ public class DeleteBuilder extends StatementBuilder{
     /**
      * Build a delete statement with one or more  conditional fields using the string representation of the column name
      * @param tableName name of the table that is being acted upon
-     * @param conditionFieldName The ColumnFieldType(s) which represents the column(s) that is/are utilized as a condition for what rows to delete
+     * @param conditionFieldNames The ColumnFieldType(s) which represents the column(s) that is/are utilized as a condition for what rows to delete
      * @return a ResultSet if any keys are generated from this execution, may be null
      * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
      */
-    public ResultSet buildDeleteStatementWithMultipleConditions(String tableName, ColumnFieldType... conditionFieldName) throws SQLException {
-        if(conditionFieldName.length==1) {
-            return buildDeleteStatement(conditionFieldName[0]);
+    public ResultSet buildDeleteStatementWithMultipleConditions(String tableName, ColumnFieldType... conditionFieldNames) throws SQLException {
+        if(conditionFieldNames.length==1) {
+            return buildDeleteStatement(conditionFieldNames[0]);
         }else {
             StringBuilder sql = new StringBuilder().append("delete from ").append(tableName);
-            sql.append(" where ");
-            for(ColumnFieldType columnFieldType:conditionFieldName) {
-                sql.append(columnFieldType.getColumnName()).append(" = ?");
-            }
-                sqlStatement = conn.prepareStatement(sql.toString());
-                sqlStatement = parseTypeData(sqlStatement, conditionFieldName);
+            sqlStatement = multipleConditionSqlBuilder(sql, conditionFieldNames, keysToReturn);
         }
         System.out.println(sqlStatement);
         return repo.statementExecute(sqlStatement);
     }
+
+
 
     /**
      *  Builds  Statement and then executes the statement in accordance to which portion of CRUD is desired over-ridden from StatementBuilder
@@ -87,6 +86,7 @@ public class DeleteBuilder extends StatementBuilder{
     @Override
     protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws ImproperConfigurationException, SQLException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted);
+        keysToReturn = tableConfig.getAllFieldNames().toArray(new String[0]);
         List<ColumnFieldType> conditionalFieldTypes = new ArrayList<>();
         processConditionStatements(tableConfig,conditionalFieldTypes,conditionalFieldNames);
         return buildDeleteStatementWithMultipleConditions(tableConfig.getTableName(),conditionalFieldTypes.toArray(new ColumnFieldType[0]));

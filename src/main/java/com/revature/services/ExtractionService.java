@@ -9,6 +9,7 @@
 package com.revature.services;
 
 import com.revature.annotations.Column;
+import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 import com.revature.configurations.ColumnFieldConfig;
 import com.revature.exception.ImproperConfigurationException;
@@ -89,5 +90,27 @@ public class ExtractionService {
             name = clazz.getSimpleName().toLowerCase();
         }
         return name;
+    }
+
+    public static List<String> extractAllFieldNames(Class<?> dataClass) {
+        List<String> columnFieldNames = new ArrayList<>();
+        String fieldName = "";
+        for(Class<?> classParse = dataClass; classParse!=null; classParse = classParse.getSuperclass()){
+            for(Field field: classParse.getDeclaredFields()){
+                field.setAccessible(true);
+                Column column = field.getAnnotation(Column.class);
+                PrimaryKey pk = field.getAnnotation(PrimaryKey.class);
+                if (column != null) {
+                    fieldName = column.columnName();
+
+                }
+                if(pk!=null){
+                    fieldName = pk.name();
+                }
+                fieldName = (fieldName.equals("") ? field.getName().toLowerCase() : fieldName);
+                columnFieldNames.add(fieldName);
+            }
+        }
+        return columnFieldNames;
     }
 }

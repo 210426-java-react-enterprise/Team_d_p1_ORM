@@ -4,8 +4,7 @@ import com.revature.annotations.Column;
 import com.revature.types.ColumnFieldType;
 import org.junit.Test;
 import org.junit.Before; 
-import org.junit.After; 
-
+import org.junit.After;
 /** 
 * TableConfig Tester. 
 * 

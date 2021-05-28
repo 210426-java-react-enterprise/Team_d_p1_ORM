@@ -42,6 +42,8 @@ public abstract class StatementBuilder{
      */
     protected StringBuilder sql;
 
+    protected String[] keysToReturn;
+
     /**
      * Parse type data  into a prepared statement after a string has been loaded into the statement.
      *
@@ -110,5 +112,18 @@ public abstract class StatementBuilder{
                 conditionalFieldTypes.add(type);
             }
         }
+    }
+
+    protected PreparedStatement multipleConditionSqlBuilder(StringBuilder sql, ColumnFieldType[] conditionFieldNames, String[] keysToReturn) throws SQLException {
+        sql.append(" where ");
+        for(ColumnFieldType columnFieldType: conditionFieldNames) {
+            sql.append(columnFieldType.getColumnName())
+                    .append(" = ?")
+                    .append(" and ");
+        }
+        sql.replace(sql.length()-5, sql.length(), "");
+        sqlStatement =  (keysToReturn[0]==null) ? conn.prepareStatement(sql.toString()) : conn.prepareStatement(sql.toString(),keysToReturn);
+        sqlStatement = parseTypeData(sqlStatement, conditionFieldNames);
+        return sqlStatement;
     }
 }
