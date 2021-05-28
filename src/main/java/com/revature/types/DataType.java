@@ -89,7 +89,7 @@ public enum DataType implements DataFieldConverter {
     private final PostgreSQLType postgreSQLType;
     private final Class<?>[] classes;
 
-    // Default Implementations, if not implemented above, falls through to here TODO todo tags need to be added throughout for further compliance.
+    // Default Implementations, if not implemented above, falls through to here
     // Implicitly private constructor for enum types
     DataType(PostgreSQLType postgreSQLType, Class<?>[] classes) {
         this.postgreSQLType = postgreSQLType;

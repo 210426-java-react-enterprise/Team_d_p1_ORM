@@ -8,7 +8,6 @@
 
 package com.revature.util;
 
-import com.revature.models.DatabaseTable;
 import com.revature.repos.Repo;
 import com.revature.statements.*;
 import com.revature.util.datasource.ConnectionFactory;
@@ -22,7 +21,6 @@ import java.util.HashMap;
 public class ORMState {
     private static ORMState ormState;
     private final Connection conn;
-    private HashMap<String,DatabaseTable<?>> databaseTables;
     /**
      * The Sql builders that are available to be used by the client side via the StatementType enum.
      */
