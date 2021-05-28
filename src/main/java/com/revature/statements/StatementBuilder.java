@@ -114,7 +114,7 @@ public abstract class StatementBuilder{
         }
     }
 
-    protected PreparedStatement multipleConditionSqlBuilder(StringBuilder sql, ColumnFieldType[] conditionFieldNames, String[] keysToReturn) throws SQLException {
+    protected PreparedStatement multipleConditionSqlBuilder(StringBuilder sql, ColumnFieldType[] conditionFieldNames, String... keysToReturn) throws SQLException {
         sql.append(" where ");
         for(ColumnFieldType columnFieldType: conditionFieldNames) {
             sql.append(columnFieldType.getColumnName())
@@ -122,7 +122,7 @@ public abstract class StatementBuilder{
                     .append(" and ");
         }
         sql.replace(sql.length()-5, sql.length(), "");
-        sqlStatement =  (keysToReturn[0]==null) ? conn.prepareStatement(sql.toString()) : conn.prepareStatement(sql.toString(),keysToReturn);
+        sqlStatement =  (keysToReturn.length==0) ? conn.prepareStatement(sql.toString()) : conn.prepareStatement(sql.toString(),keysToReturn);
         sqlStatement = parseTypeData(sqlStatement, conditionFieldNames);
         return sqlStatement;
     }

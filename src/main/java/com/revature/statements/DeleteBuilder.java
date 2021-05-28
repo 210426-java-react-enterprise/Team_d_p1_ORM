@@ -47,7 +47,7 @@ public class DeleteBuilder extends StatementBuilder{
                 " where " +
                 deleteConditionFieldName.getColumnName() +
                 " = ?";
-        sqlStatement = conn.prepareStatement(sql,keysToReturn);
+        sqlStatement = conn.prepareStatement(sql);
         sqlStatement = parseTypeData(sqlStatement,new ColumnFieldType[]{deleteConditionFieldName});
         System.out.println(sqlStatement);
         return repo.statementExecute(sqlStatement);
@@ -65,7 +65,7 @@ public class DeleteBuilder extends StatementBuilder{
             return buildDeleteStatement(conditionFieldNames[0]);
         }else {
             StringBuilder sql = new StringBuilder().append("delete from ").append(tableName);
-            sqlStatement = multipleConditionSqlBuilder(sql, conditionFieldNames, keysToReturn);
+            sqlStatement = multipleConditionSqlBuilder(sql, conditionFieldNames);
         }
         System.out.println(sqlStatement);
         return repo.statementExecute(sqlStatement);

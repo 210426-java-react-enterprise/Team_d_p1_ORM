@@ -73,7 +73,7 @@ public class QueryBuilder extends StatementBuilder{
             return buildSelectStatement(conditionFieldName[0]);
         }else {
             StringBuilder sql = new StringBuilder().append("select * from ").append(tableName);
-            sqlStatement = multipleConditionSqlBuilder(sql,conditionFieldName,new String[1]);
+            sqlStatement = multipleConditionSqlBuilder(sql,conditionFieldName);
         }
         System.out.println(sqlStatement);
         return repo.queryExecute(sqlStatement);
