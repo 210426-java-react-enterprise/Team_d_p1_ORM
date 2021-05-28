@@ -35,23 +35,68 @@ public class ExtractionService {
             for(Field field: classParse.getDeclaredFields()){
                 field.setAccessible(true);
                 Column column = field.getAnnotation(Column.class);
-                if (column == null) {
-                    continue;
-                }
-                ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
-                ColumnFieldType fieldInfo = new ColumnFieldType(columnFieldConfigSetup(fieldConfig,column,field));
-                try {
-                    fieldInfo.setDefaultValue(field.get(objectToPersist));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }catch(NullPointerException e){
-                    if(column.notNull()){
-                        throw new ImproperConfigurationException("Value that is classified as not null, is infact null");
+                PrimaryKey pk = field.getAnnotation(PrimaryKey.class);
+                if (column != null) {
+                    ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
+                    ColumnFieldType fieldInfo = new ColumnFieldType(columnFieldConfigSetup(fieldConfig,column,field));
+                    try {
+                        fieldInfo.setDefaultValue(field.get(objectToPersist));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }catch(NullPointerException e){
+                        if(column.notNull()){
+                            throw new ImproperConfigurationException("Value that is classified as not null, is infact null");
+                        }
                     }
+                    fieldInfo.setTableName(tableName);
+                    fieldInfo.setField(field);
+                    columnFieldTypes.add(fieldInfo);
                 }
-                fieldInfo.setTableName(tableName);
-                fieldInfo.setField(field);
-                columnFieldTypes.add(fieldInfo);
+
+                // TEST
+
+                if(pk!=null){
+                    ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
+                    ColumnFieldType fieldInfo = new ColumnFieldType(columnFieldConfigSetup(fieldConfig,pk,field));
+                    try {
+                        fieldInfo.setDefaultValue(field.get(objectToPersist));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    fieldInfo.setTableName(tableName);
+                    fieldInfo.setField(field);
+                    columnFieldTypes.add(fieldInfo);
+                }
+
+
+            }
+        }
+        return columnFieldTypes;
+    }
+
+    public static List<ColumnFieldType> extractData(Object objectToPersist,String tableName,boolean insertOption) throws ImproperConfigurationException {
+        Class<?> clazz = objectToPersist.getClass();
+        List<ColumnFieldType> columnFieldTypes = new ArrayList<>();
+        for(Class<?> classParse = clazz; classParse!=null; classParse = classParse.getSuperclass()){
+            for(Field field: classParse.getDeclaredFields()){
+                field.setAccessible(true);
+                Column column = field.getAnnotation(Column.class);
+                if (column != null) {
+                    ColumnFieldConfig fieldConfig = new ColumnFieldConfig();
+                    ColumnFieldType fieldInfo = new ColumnFieldType(columnFieldConfigSetup(fieldConfig,column,field));
+                    try {
+                        fieldInfo.setDefaultValue(field.get(objectToPersist));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }catch(NullPointerException e){
+                        if(column.notNull()){
+                            throw new ImproperConfigurationException("Value that is classified as not null, is infact null");
+                        }
+                    }
+                    fieldInfo.setTableName(tableName);
+                    fieldInfo.setField(field);
+                    columnFieldTypes.add(fieldInfo);
+                }
             }
         }
         return columnFieldTypes;
@@ -69,6 +114,23 @@ public class ExtractionService {
         fieldConfig.setColumnName((columnName.equals("") ? field.getName().toLowerCase() : columnName));
         fieldConfig.setNotNull(column.notNull());
         fieldConfig.setUnique(column.unique());
+        fieldConfig.setDataType(DataType.getDataType(field.getType()));
+        fieldConfig.setFieldName(field.getName());
+        return fieldConfig;
+    }
+
+    /**
+     *  Parses and processes a fieldConfig to be used with a ColumnFieldType
+     * @param fieldConfig representation of the behavior of a field within a column in a database
+     * @param pk annotation holding information that is used to set the behavior of a fieldConfig
+     * @param field the field of an object that is represented by a column in database
+     * @return the configuration object of a ColumnFieldType that is represented as a column in a database table
+     */
+    private static ColumnFieldConfig columnFieldConfigSetup(ColumnFieldConfig fieldConfig, PrimaryKey pk, Field field){
+        String columnName = pk.name();
+        fieldConfig.setColumnName((columnName.equals("") ? field.getName().toLowerCase() : columnName));
+        fieldConfig.setNotNull(true);
+        fieldConfig.setUnique(true);
         fieldConfig.setDataType(DataType.getDataType(field.getType()));
         fieldConfig.setFieldName(field.getName());
         return fieldConfig;

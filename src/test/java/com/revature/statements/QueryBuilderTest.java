@@ -2,6 +2,7 @@ package com.revature.statements;
 
 import com.revature.annotations.Column;
 import com.revature.annotations.Entity;
+import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Table;
 import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
@@ -33,7 +34,7 @@ public class QueryBuilderTest {
     protected static class TestClass{
         @Column(columnName = "user_id")
         public int userID = 2;
-        @Column
+        @PrimaryKey
         public String username = "JackSparrow";
         @Column
         public String password = "password!";

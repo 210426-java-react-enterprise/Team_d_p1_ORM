@@ -73,7 +73,7 @@ public class InsertBuilder extends StatementBuilder{
      */
     @Override
     protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
-        TableConfig tableConfig = new TableConfig(objectToBePersisted);
+        TableConfig tableConfig = new TableConfig(objectToBePersisted,true);
         keysToReturn = tableConfig.getAllFieldNames().toArray(new String[0]);
         return buildInsertStatement(tableConfig.getFieldTypes().toArray(new ColumnFieldType[0]), tableConfig.getTableName());
     }

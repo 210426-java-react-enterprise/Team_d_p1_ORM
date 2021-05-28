@@ -1,6 +1,9 @@
 package com.revature.statements; 
 
 import com.revature.annotations.Column;
+import com.revature.annotations.Entity;
+import com.revature.annotations.PrimaryKey;
+import com.revature.annotations.Table;
 import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
@@ -29,10 +32,12 @@ import static org.mockito.MockitoAnnotations.openMocks;
 */ 
 public class UpdateBuilderTest {
 
+    @Entity
+    @Table(name = "test_class")
     protected static class TestClass{
         @Column(notNull = true)
         private float testFloat = 18.0F;
-        @Column
+        @PrimaryKey
         private boolean testBool = true;
         @Column
         private double testDouble = 3478.01;

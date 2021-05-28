@@ -31,6 +31,17 @@ public class TableConfig {
         this.tableName = ExtractionService.extractTableName(dataClass);
         extractData(objectToBePersisted);
     }
+    /**
+     * Setup a table config associated with the dataClass and field configurations. The table-name will be extracted
+     * from the dataClass of the persisted object.
+     * @param objectToBePersisted The object that is going to persisted into the database.
+     */
+
+    public TableConfig(Object objectToBePersisted,boolean insertOption) throws ImproperConfigurationException {
+        this.dataClass = objectToBePersisted.getClass();
+        this.tableName = ExtractionService.extractTableName(dataClass);
+        extractData(objectToBePersisted,insertOption);
+    }
 
     /**
      * Setup a table config associated with the dataClass, table-name, and field configurations.
@@ -116,6 +127,15 @@ public class TableConfig {
      */
     public void extractData(Object objectToPersist) throws ImproperConfigurationException {
         this.fieldTypes = ExtractionService.extractData(objectToPersist,tableName);
+    }
+
+    /**
+     * Extracts the data from an object and places the data in this configuration
+     * @param objectToPersist  Object to have data extracted from, passes tableName to place into the fieldTypes
+     * @throws ImproperConfigurationException when the shape of the table config doesnt match the data present in the objectToPersist
+     */
+    public void extractData(Object objectToPersist,boolean insertOption) throws ImproperConfigurationException {
+        this.fieldTypes = ExtractionService.extractData(objectToPersist,tableName, insertOption);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.revature.statements; 
 
 import com.revature.annotations.Column;
+import com.revature.annotations.PrimaryKey;
 import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
@@ -35,7 +36,7 @@ public class InsertBuilderTest {
         private int testInt = 18;
         @Column(columnName = "Test Column 2")
         private String testString = "test me";
-        @Column
+        @PrimaryKey
         private int testInteger = 12;
         @Column
         private long testLong = 3478L;
