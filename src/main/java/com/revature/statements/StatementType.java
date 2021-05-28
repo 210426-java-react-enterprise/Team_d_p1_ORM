@@ -75,6 +75,7 @@ public enum StatementType {
 
         @Override
         public <T> ResultSet createStatementWithCondition(T objectToPersist, String... conditionalParam) throws ImproperConfigurationException {
+            System.out.println("BreadCrumb 1");
             return getStatementBuilderFromORMWithCondition(objectToPersist, conditionalParam, "update");
         }
     },
@@ -96,6 +97,7 @@ public enum StatementType {
 
     private static ResultSet getStatementBuilderFromORMWithCondition(Object objectToPersist, String[] conditionalParam, String builderName) throws ImproperConfigurationException {
         try {
+            System.out.println("breadCrumb2");
             return ORMState.getStatementBuilder(builderName).buildStatement(objectToPersist, conditionalParam);
         } catch (SQLException e) {
             throw new ImproperConfigurationException("The configuration of the Object is invalid when compared to the database");

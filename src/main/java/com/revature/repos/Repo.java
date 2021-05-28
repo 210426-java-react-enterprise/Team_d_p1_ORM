@@ -29,10 +29,12 @@ public class Repo {
     public ResultSet statementExecute(PreparedStatement statement) {
         ResultSet rs = null;
         try {
-            int rowInserted = statement.executeUpdate();
-            if (rowInserted != 0) {
-                rs = statement.getGeneratedKeys();
-            }
+            System.out.println("SQL statement in statement execute: " + statement);
+            statement.executeUpdate();
+
+//            if (rowInserted != 0) {
+//                rs = statement.getGeneratedKeys();
+//            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

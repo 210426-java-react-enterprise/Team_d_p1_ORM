@@ -76,7 +76,7 @@ public class UpdateBuilder extends StatementBuilder{
         for(ColumnFieldType fieldName:fieldsData){
             sql.append(fieldName.getColumnName()).append(" = ?, ");
         }
-        sql.replace(sql.length()-1,sql.length(),"");
+        sql.replace(sql.length()-2,sql.length(),"");
 
         sql.append(" where ");
         for(ColumnFieldType fieldType:updateConditionFieldNames){
@@ -85,9 +85,11 @@ public class UpdateBuilder extends StatementBuilder{
                     .append(fieldType.getDefaultValue().toString())
                     .append(" and ");
         }
-        sql.replace(sql.length()-5,sql.length(),"");
-        sqlStatement = conn.prepareStatement(sql.toString(),keysToReturn);
+//        sql.replace(sql.length()-5,sql.length(),"");
+        sql.append("task_id=500");
+        sqlStatement = conn.prepareStatement(sql.toString());
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
+        System.out.println("STATEMENT FROM ORM: " + sqlStatement);
         return repo.statementExecute(sqlStatement);
     }
 
