@@ -95,7 +95,7 @@ public class UpdateBuilder extends StatementBuilder{
     }
 
     @Override
-    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
+    public ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted);
         List<ColumnFieldType> conditionalFieldTypes = new ArrayList<>();
         keysToReturn = tableConfig.getAllFieldNames().toArray(new String[0]);

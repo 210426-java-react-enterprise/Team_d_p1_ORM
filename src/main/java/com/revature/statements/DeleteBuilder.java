@@ -84,7 +84,7 @@ public class DeleteBuilder extends StatementBuilder{
      * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
      */
     @Override
-    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws ImproperConfigurationException, SQLException {
+    public ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws ImproperConfigurationException, SQLException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted);
         keysToReturn = tableConfig.getAllFieldNames().toArray(new String[0]);
         List<ColumnFieldType> conditionalFieldTypes = new ArrayList<>();

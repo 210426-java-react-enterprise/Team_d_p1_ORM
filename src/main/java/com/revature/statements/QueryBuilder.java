@@ -91,7 +91,7 @@ public class QueryBuilder extends StatementBuilder{
      * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
      */
     @Override
-    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
+    public ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted);
         List<ColumnFieldType> conditionalFieldTypes = new ArrayList<>();
         processConditionStatements(tableConfig,conditionalFieldTypes,conditionalFieldNames);

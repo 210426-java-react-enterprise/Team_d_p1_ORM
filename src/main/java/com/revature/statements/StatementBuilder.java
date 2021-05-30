@@ -96,7 +96,7 @@ public abstract class StatementBuilder{
      * @throws ImproperConfigurationException If there is no data present in a field while NotNull condition is present
      * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
      */
-    protected abstract ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException;
+    public abstract ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException;
 
     /**
      * Process a list of conditions from a table config and return the ones matching specified conditions field names.
