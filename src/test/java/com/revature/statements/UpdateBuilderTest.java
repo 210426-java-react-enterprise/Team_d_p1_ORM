@@ -1,6 +1,9 @@
 package com.revature.statements; 
 
 import com.revature.annotations.Column;
+import com.revature.annotations.Entity;
+import com.revature.annotations.PrimaryKey;
+import com.revature.annotations.Table;
 import com.revature.exception.ImproperConfigurationException;
 import com.revature.repos.Repo;
 import com.revature.types.ColumnFieldType;
@@ -29,10 +32,12 @@ import static org.mockito.MockitoAnnotations.openMocks;
 */ 
 public class UpdateBuilderTest {
 
+    @Entity
+    @Table(name = "test_class")
     protected static class TestClass{
         @Column(notNull = true)
         private float testFloat = 18.0F;
-        @Column
+        @PrimaryKey
         private boolean testBool = true;
         @Column
         private double testDouble = 3478.01;
@@ -49,9 +54,10 @@ public class UpdateBuilderTest {
     @Mock
     ResultSet rs;
 
+
     @Before
     public void before() throws Exception {
-        ConnectionFactory.setConnection("bankoffsm.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","public");
+        ConnectionFactory.setConnection("task-force.c2iiztx3t7wq.us-east-1.rds.amazonaws.com","postgres","revature","test");
         openMocks(this);
         testClass = new TestClass();
     }
@@ -98,7 +104,9 @@ public void testBuildUpdateStatement() throws Exception {
     try {
         when(rs.next()).thenReturn(true);
         when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
         sut.buildUpdateStatement(fieldsData,dataToDelete);
+        when(rs.getString("index")).thenReturn("");
     } catch (SQLException throwables) {
         throwables.printStackTrace();
     }
@@ -106,10 +114,16 @@ public void testBuildUpdateStatement() throws Exception {
 
     @Test
     public void testUpdateStatementIntegration() throws SQLException, ImproperConfigurationException {
+        when(rs.next()).thenReturn(true);
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         sut.buildStatement(testClass,"testbool");
     }
     @Test
     public void testUpdateStatementIntegrationWithMultipleFields() throws SQLException, ImproperConfigurationException {
+        when(rs.next()).thenReturn(true);
+        when(mockRepo.queryExecute(any())).thenReturn(rs);
+        when(mockRepo.statementExecute(any())).thenReturn(rs);
         sut.buildStatement(testClass,"testbool","testdouble");
     }
 

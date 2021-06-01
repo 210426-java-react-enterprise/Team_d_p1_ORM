@@ -8,27 +8,29 @@
 package com.revature.types;
 
 import com.revature.util.DataFieldConverter;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Date;
 
 /**
  * Java Data Types Equivalent to the PostgreSQL Types
  */
-//TODO Determine what types correspond to which PSQL types Still need
-//    -- JSON
 public enum DataType implements DataFieldConverter {
 
+    /**
+     * The String.
+     */
     STRING(PostgreSQLType.VARCHAR, new Class<?>[] {String.class}){
 
     },
+    /**
+     * The Boolean.
+     */
     BOOLEAN(PostgreSQLType.BOOLEAN, new Class<?>[]{boolean.class}){
 
     },
+    /**
+     * The Date.
+     */
     DATE(PostgreSQLType.TIMESTAMP, new Class<?>[] { Date.class }) {
 
         @Override
@@ -37,6 +39,9 @@ public enum DataType implements DataFieldConverter {
         }
 
     },
+    /**
+     * The Char.
+     */
     CHAR(PostgreSQLType.CHAR, new Class<?>[] { char.class }) {
 
         @Override
@@ -50,18 +55,33 @@ public enum DataType implements DataFieldConverter {
         }
 
     },
+    /**
+     * The Integer.
+     */
     INTEGER(PostgreSQLType.INT4, new Class<?>[]{int.class}){
 
     },
+    /**
+     * The Long.
+     */
     LONG(PostgreSQLType.INT8, new Class<?>[] { long.class }) {
 
     },
+    /**
+     * The Float.
+     */
     FLOAT(PostgreSQLType.FLOAT8, new Class<?>[]{float.class}){
 
     },
+    /**
+     * The Double.
+     */
     DOUBLE(PostgreSQLType.DECIMAL, new Class<?>[] { double.class }) {
 
     },
+    /**
+     * The Serial.
+     */
     SERIAL(PostgreSQLType.SERIAL4,new Class<?>[]{Long.class}){
 
     };
@@ -80,11 +100,21 @@ public enum DataType implements DataFieldConverter {
         return javaObject;
     }
 
+    /**
+     * Returns the Postgres data type that is stored in the database for specified argument.
+     * @return the PostgreSQL data type
+     */
     @Override
     public PostgreSQLType getPostgreSQLType() {
         return postgreSQLType;
     }
 
+    /**
+     * Get the DataType of a specific class.
+     *
+     * @param clazz the Class whose DataType is being modeled
+     * @return the data type that is modeled after a Class
+     */
     public static DataType getDataType(Class<?> clazz){
         for(DataType element:values()){
             if(element.classes[0] == clazz)

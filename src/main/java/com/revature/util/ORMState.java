@@ -16,16 +16,21 @@ import com.revature.util.datasource.ConnectionFactory;
 import java.sql.Connection;
 import java.util.HashMap;
 
+/**
+ * The type Orm state.
+ */
 public class ORMState {
     private static ORMState ormState;
     private final Connection conn;
     private HashMap<String,DatabaseTable<?>> databaseTables;
+    /**
+     * The Sql builders that are available to be used by the client side via the StatementType enum.
+     */
     public static HashMap<String, StatementBuilder> sqlBuilders;
-    private Repo repo;
 
     private ORMState(){
         conn = ConnectionFactory.getInstance().getConnection();
-        repo = new Repo(conn);
+        Repo repo = new Repo();
         sqlBuilders = new HashMap<>();
         sqlBuilders.put("insert",new InsertBuilder(repo));
         sqlBuilders.put("delete",new DeleteBuilder(repo));
@@ -34,6 +39,11 @@ public class ORMState {
 
     }
 
+    /**
+     * Get instance orm state.
+     *
+     * @return the orm state, forced singleton
+     */
     public static ORMState getInstance(){
         if(ormState == null){
             ormState = new ORMState();
@@ -41,10 +51,22 @@ public class ORMState {
         return ormState;
     }
 
+    /**
+     * Get a statement builder of a specific type associated by a key name .
+     *
+     * @param builderName the builder name that is a key to the proper builder for a specific CRUD function
+     * @return the statement builder paired to the builderName
+     */
     public static StatementBuilder getStatementBuilder(String builderName){
+        System.out.println("breadcrumb3");
         return sqlBuilders.get(builderName);
     }
 
+    /**
+     * Get a from the connection pool if needed.
+     *
+     * @return a connection to a database
+     */
     public Connection getConnection(){
         return conn;
     }

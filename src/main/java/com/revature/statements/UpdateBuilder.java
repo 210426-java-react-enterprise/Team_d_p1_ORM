@@ -19,30 +19,58 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The type Update builder.
+ */
 public class UpdateBuilder extends StatementBuilder{
 
     private Repo repo;
 
+    /**
+     * Instantiates a new Update builder.
+     *
+     * @param repo the repo used to execute the statements
+     */
     public UpdateBuilder(Repo repo){
         conn = ConnectionFactory.getInstance().getConnection();
         type = StatementType.UPDATE;
         this.repo = repo;
     }
+
+    /**
+     * Builds an update statement with a singular conditional field
+     *
+     * @param fieldsData                the fields data that is to be updated
+     * @param updateConditionFieldNames the update condition  ColumnFieldType that hold information about the field that is a condition
+     * @return the result set of any generated keys from the execution of the statement
+     * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
+     */
     public ResultSet buildUpdateStatement(ColumnFieldType[] fieldsData,ColumnFieldType updateConditionFieldNames) throws SQLException {
         StringBuilder sql = new StringBuilder().append("update ").append(updateConditionFieldNames.getTableName()).append(" set ");
         for(ColumnFieldType fieldName:fieldsData){
             sql.append(fieldName.getColumnName()).append(" = ?, ");        }
-        sql.replace(sql.length()-1,sql.length()," where ");
+        sql.replace(sql.length()-2,sql.length()," where ");
         sql.append(updateConditionFieldNames.getColumnName())
                 .append(" = ")
                 .append(updateConditionFieldNames.getDefaultValue().toString());
         System.out.println(sql);
-        sqlStatement = conn.prepareStatement(sql.toString());
+        sqlStatement = conn.prepareStatement(sql.toString(),keysToReturn);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
 
         return repo.statementExecute(sqlStatement);
     }
+
+    /**
+     * Build update statement with multiple conditions result set.
+     *
+     * @param tableName                 the table name of the table that is intended to be updated
+     * @param fieldsData                the fields data that is to be updated
+     * @param updateConditionFieldNames the update conditional  ColumnFieldType(s) that hold information about the field that is the condition(s)
+     * @return the result set of any generated keys from the execution of the statement
+     * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
+     */
     public ResultSet buildUpdateStatementWithMultipleConditions(String tableName,ColumnFieldType[] fieldsData,ColumnFieldType... updateConditionFieldNames) throws SQLException {
+        System.out.println("fields data: " + Arrays.toString(fieldsData));
         StringBuilder sql = new StringBuilder().append("update ").append(tableName).append(" set ");
         if(updateConditionFieldNames.length==1){
             return buildUpdateStatement(fieldsData,updateConditionFieldNames[0]);
@@ -50,21 +78,27 @@ public class UpdateBuilder extends StatementBuilder{
         for(ColumnFieldType fieldName:fieldsData){
             sql.append(fieldName.getColumnName()).append(" = ?, ");
         }
-        sql.replace(sql.length()-1,sql.length()," where ");
+        sql.replace(sql.length()-2,sql.length(),"");
+
+        sql.append(" where ");
         for(ColumnFieldType fieldType:updateConditionFieldNames){
             sql.append(fieldType.getColumnName())
                     .append(" = ")
-                    .append(fieldType.getDefaultValue().toString());
+                    .append(fieldType.getDefaultValue().toString())
+                    .append(" and ");
         }
-        sqlStatement = conn.prepareStatement(sql.toString());
+        sql.replace(sql.length()-5,sql.length(),"");
+        sqlStatement = conn.prepareStatement(sql.toString(),keysToReturn);
         sqlStatement = parseTypeData(sqlStatement,fieldsData);
+        System.out.println("STATEMENT FROM ORM: " + sqlStatement);
         return repo.statementExecute(sqlStatement);
     }
 
     @Override
-    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
+    public ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted);
         List<ColumnFieldType> conditionalFieldTypes = new ArrayList<>();
+        keysToReturn = tableConfig.getAllFieldNames().toArray(new String[0]);
         processConditionStatements(tableConfig,conditionalFieldTypes,conditionalFieldNames);
         return buildUpdateStatementWithMultipleConditions(tableConfig.getTableName(), tableConfig.getFieldTypes().toArray(new ColumnFieldType[0]),conditionalFieldTypes.toArray(new ColumnFieldType[0]));
     }

@@ -8,13 +8,14 @@
 
 package com.revature.util.datasource;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * The type Connection factory.
+ */
 public class ConnectionFactory {
 
     private static ConnectionFactory connectionFactory;
@@ -32,6 +33,11 @@ public class ConnectionFactory {
 
     }
 
+    /**
+     * Gets the only instance allowed of this class.
+     *
+     * @return the instance of this class
+     */
     public static ConnectionFactory getInstance() {
         if (connectionFactory == null) {
             connectionFactory = new ConnectionFactory();
@@ -40,6 +46,11 @@ public class ConnectionFactory {
         return connectionFactory;
     }
 
+    /**
+     * Generates a connection.
+     *
+     * @return the connection generated
+     */
     public Connection getConnection() {
 
         Connection conn = null;
@@ -59,7 +70,16 @@ public class ConnectionFactory {
         return conn;
 
     }
-    // Entry point into setting the connection for the Database for the ORM from the WebApp, setup this way because if there is time, easy to change to allow for
+
+    /**
+     * Sets up the information needed to generate a connection to a database.
+     *
+     * @param hostURL    the host url to the database
+     * @param username   the username to the database
+     * @param password   the password to the database
+     * @param schemaName the schema name of the database
+     */
+// Entry point into setting the connection for the Database for the ORM from the WebApp, setup this way because if there is time, easy to change to allow for
     // multiple connections based on a preface call
     public static void setConnection(String hostURL, String username, String password,String schemaName){
         String processedHostURL = "jdbc:postgresql://"+hostURL+"/postgres?currentSchema="+schemaName;
