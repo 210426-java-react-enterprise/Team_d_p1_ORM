@@ -106,6 +106,7 @@ public void testBuildUpdateStatement() throws Exception {
         when(mockRepo.queryExecute(any())).thenReturn(rs);
         when(mockRepo.queryExecute(any())).thenReturn(rs);
         sut.buildUpdateStatement(fieldsData,dataToDelete);
+        when(rs.getString("index")).thenReturn("");
     } catch (SQLException throwables) {
         throwables.printStackTrace();
     }

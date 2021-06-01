@@ -72,7 +72,7 @@ public class InsertBuilder extends StatementBuilder{
      * @throws SQLException If there is an issue with connection to the database, or the models provided do not match what is present on the database utilized
      */
     @Override
-    protected ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
+    public ResultSet buildStatement(Object objectToBePersisted, String... conditionalFieldNames) throws SQLException, ImproperConfigurationException {
         TableConfig tableConfig = new TableConfig(objectToBePersisted,true);
         keysToReturn = tableConfig.getAllFieldNames().toArray(new String[0]);
         return buildInsertStatement(tableConfig.getFieldTypes().toArray(new ColumnFieldType[0]), tableConfig.getTableName());
